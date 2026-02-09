@@ -17,8 +17,9 @@ from ftplib import FTP
 #-----------------------------------------------------------------------------------------------------
 # i will be using a mock file created from appedix example as the file generation has not been set up
 #-----------------------------------------------------------------------------------------------------
-def test_open_patient_file_and_save_data():
-  patient = open("patient file name", "r")
-  patientfile.readable
 
-test_open_patient_file_and_save_data()
+def open_patient_file_and_save_data(patient):
+  patient1 = open(patient, "r")
+  return print(patient1.readable())
+
+open_patient_file_and_save_data("patient files/valid/MED_DATA_20230603140104.csv")
