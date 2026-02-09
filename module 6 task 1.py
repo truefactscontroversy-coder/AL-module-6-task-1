@@ -24,27 +24,39 @@ def open_patient_file_and_save_data(patient):
    
 open_patient_file_and_save_data("patient files/valid/MED_DATA_20230603140104.csv")
 
-def test_for_valid_format(patient):
-    patient2 = patient 
-    str, numb ("seperates numbers and letters")
-    century = numb(0:3)
-    year = numb(3:5)
-    month = numb(5:7)
-    day = numb
-    hour = numb
-    minute = numb
-    second = numb
-    if century >= 21:
+def check_for_valid_format(patient):
+    numb = ""
+    for ch in patient:
+        if ch.isdigit():          
+            numb += ch
+    century = numb[0:2]
+    numbcentury = int(century)
+    year = numb[2:4]
+    numbyear = int(year)
+    month = numb[4:6]
+    numbmonth = int(month)
+    day = numb[6:8]
+    numbday = int(day)
+    hour = numb[8:10]
+    numbhour = int(hour)
+    minute = numb[10:12]
+    numbmin = int(minute)
+    second = numb[12:]
+    numbsec = int(second)
+    if numbcentury != 20:
      return False
-    if year >= 27:
+    elif numbyear >= 27:
       return False
-    if month >= 13:
+    elif numbmonth >= 13:
       return False
-    if day >= 32:
+    elif numbday >= 32:
       return False
-    if hour >= 25:
+    elif numbhour >= 25:
       return False
-    if minute > 61:
+    elif numbmin > 61:
       return False
-    if month > 61:
+    elif numbsec > 61:
       return False
+    else:
+      return print(True) 
+patient = check_for_valid_format("patient files/valid/MED_DATA_20230603140104.csv")
