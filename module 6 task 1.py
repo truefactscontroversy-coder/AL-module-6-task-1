@@ -20,6 +20,6 @@ from ftplib import FTP
 
 def open_patient_file_and_save_data(patient):
   patient1 = open(patient, "r")
-  return print(patient1.readable())
+  return print(patient1.readable()), print(patient1.read())
 
 open_patient_file_and_save_data("patient files/valid/MED_DATA_20230603140104.csv")
