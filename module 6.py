@@ -1,4 +1,4 @@
-import ftplib
+from ftplib import FTP
 
-def test_open_ftp_server():
+def open_ftp_server():
     ftp.connect("ftp server URL")
