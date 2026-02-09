@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 {
     "python-envs.defaultEnvManager": "ms-python.python:system",
     "python-envs.pythonProjects": []
+=======
+{
+    "python.analysis.autoImportCompletions": true
+>>>>>>> 17995f9f08f40e7ec7c05c183092d3118c37de3f
 }
