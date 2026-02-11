@@ -24,9 +24,9 @@ i will be using a mock file created from appedix example as the file generation 
 #-----------------------------------------------------------------------------------------------------
 def open_patient_file_and_save_data(patient):
   patient1 = open(patient, "r")
-  return print(patient1.readable()), print(patient1.read()), patient1
+  return print(type(patient1)), print(patient1.read()), patient1
    
-open_patient_file_and_save_data("patient files/valid/MED_DATA_20230603140104.csv")
+# open_patient_file_and_save_data("patient files/valid/MED_DATA_20230603140104.csv")
 
 #---------------------------------------------
 # validation check for correct date format
@@ -66,26 +66,24 @@ def check_for_valid_format(patient):
       return False
     else:
       return print(True) 
-patient = check_for_valid_format("patient files/valid/MED_DATA_20230603140104.csv")
+# patient = check_for_valid_format("patient files/valid/MED_DATA_20230603140104.csv")
 
 #----------------------------------------
-# duplication check unit
+# batch ID duplication check unit
 #----------------------------------------
+
 import csv 
 from collections import Counter
 
-def test_for_dup_batch_ID(patient):
-    column_name = ("isolated column")
+def check_for_dup_batch_ID(patient):
     extracted_batch_ID = []
-    open("patientfile") as valuepair:
-    patient_data = read("patientfile")
-    for inter_over_row in patient_data:
-        extracted_batch_ID.append({def col: def row, creating valuepairs})
-        batch_ID = extracted_batch_ID.get("isolated column")
-    batch_ID_dic = Counter(batch_ID)
-    batch_ID_final_test = list(batch_ID_dic.value)) 
-    for ID in batch_ID_final_test:
-        if ID > 1:
-        return False
+    patient_data = open(patient, newline="")
+    extracted_batch_ID.append([row.split(",")[0] for row in patient_data])
+    batch_id = tuple(extracted_batch_ID[0])
+    batch_ID = Counter(batch_id)
+    ID_amount_list = list(batch_ID.values())
+    if any(id != 1 for id in ID_amount_list):
+        return print(False)
     else:
-        return True
+        return print(True)   
+check_for_dup_batch_ID("patient files/valid/valid data.csv")
