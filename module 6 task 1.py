@@ -113,16 +113,16 @@ def check_for_invalid_field_name(patient):
 
 #check_for_invalid_field_name("patient files/valid/valid data.csv")
 
-def test_check_missing_column_row_and_invalid_entries(patient):
-   rows_of_patient_data = []
-   patient_data = open(patient, add newline="" for cleancode) 
-   for eachrow in patient_data:
-       rows_of_patient_data.append(eachrow.split(","))
-   for batch in rows_of_patient_data:
+def check_missing_column_row_and_invalid_entries(patient):
+   row_of_patient_data = []
+   patient_data = open(patient, newline="") 
+   for row in patient_data:
+       row_of_patient_data.append(row.split(","))
+   for batch in row_of_patient_data:
        if len(batch) != 12:
           return print(False)
        else:
           return print(True)
                                   
 
-test_check_missing_column_row_and_invalid_entries("patient files/not valid/1/MED_DATA_120603189004.csv")
+check_missing_column_row_and_invalid_entries("patient files/not valid/1/MED_DATA_120603189004.csv")
