@@ -89,23 +89,24 @@ def check_for_dup_batch_ID(patient):
 # check_for_dup_batch_ID("patient files/valid/valid data.csv")
 
 def check_for_invalid_field_name(patient):
-   names = 0
    column_names = open(patient, "r")
    first_column = column_names.readline()
    first_row = first_column.split(",")
-   if first_row[0] != "batch_id" or first_row[1] != "timestamp":
-        return print(False)
    readings = first_row[2:]
    readings_sorted = ";".join(readings)
    readings_sorted = readings_sorted.strip("\n")
    readings_list = ["reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
    reading_rejoined = ";".join(readings_list)
+   readings_count = len(readings)
+   total_columns = len(first_row)
    if readings_sorted != reading_rejoined:
          return print(False)
-   for each_reading in first_row:
-       names += 1
-   if (names != 12 or names > 13):
+   elif ( total_columns != 12 or total_columns > 13):
        return False 
+   elif first_row[0] != "batch_id" or first_row[1] != "timestamp":
+        return print(False)
+   elif readings_count != 10:
+        return print(False)
    else:
       return print(True)
    
