@@ -86,7 +86,7 @@ def check_for_dup_batch_ID(patient):
         return print(False)
     else:
         return print(True)   
-# check_for_dup_batch_ID("patient files/valid/valid data.csv")
+#check_for_dup_batch_ID("patient files/not valid/1/MED_DATA_120603189004.csv")
 
 def check_for_invalid_field_name(patient):
    column_names = open(patient, "r")
@@ -111,4 +111,18 @@ def check_for_invalid_field_name(patient):
       return print(True)
    
 
-check_for_invalid_field_name("patient files/not valid/1/MED_DATA_120603189004.csv")
+#check_for_invalid_field_name("patient files/valid/valid data.csv")
+
+def test_check_missing_column_row_and_invalid_entries(patient):
+   rows_of_patient_data = []
+   patient_data = open(patient, add newline="" for cleancode) 
+   for eachrow in patient_data:
+       rows_of_patient_data.append(eachrow.split(","))
+   for batch in rows_of_patient_data:
+       if len(batch) != 12:
+          return print(False)
+       else:
+          return print(True)
+                                  
+
+test_check_missing_column_row_and_invalid_entries("patient files/not valid/1/MED_DATA_120603189004.csv")
