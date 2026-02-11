@@ -86,21 +86,28 @@ def check_for_dup_batch_ID(patient):
         return print(False)
     else:
         return print(True)   
-check_for_dup_batch_ID("patient files/valid/valid data.csv")
+# check_for_dup_batch_ID("patient files/valid/valid data.csv")
 
-def test_check_for_invalid_field_name(patient):
-   column_names = open(patient.readline())
-   for each_name in column_names:
-       each_name += 1
-       if (each_name != 11 or each_name > 12):
-          return False
-       elif each_name[0] == "batch_id":
-          return False
-       elif each_name[1] != "timestamp":
-          return False
-   for each_reading in column_names:
-      reading = "f reading, + 1"
-      if each_reading != reading:
-         return False
-      
-test_check_for_invalid_field_name("patient files/valid/valid data.csv")
+def check_for_invalid_field_name(patient):
+   names = 0
+   column_names = open(patient, "r")
+   first_column = column_names.readline()
+   first_row = first_column.split(",")
+   if first_row[0] != "batch_id" or first_row[1] != "timestamp":
+        return print(False)
+   readings = first_row[2:]
+   readings_sorted = ";".join(readings)
+   readings_sorted = readings_sorted.strip("\n")
+   readings_list = ["reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
+   reading_rejoined = ";".join(readings_list)
+   if readings_sorted != reading_rejoined:
+         return print(False)
+   for each_reading in first_row:
+       names += 1
+   if (names != 12 or names > 13):
+       return False 
+   else:
+      return print(True)
+   
+
+check_for_invalid_field_name("patient files/not valid/1/MED_DATA_120603189004.csv")
