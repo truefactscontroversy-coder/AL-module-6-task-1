@@ -133,13 +133,19 @@ def check_for_valid_reading_values(patient):
     extracted_patient_readings.append([readings.split(",")[2:] for readings in patient_data])
     patient_readings = extracted_patient_readings[0]
     patient_readings = patient_readings[1:]
-    patient_readings_float = [[float(readings) for readings in sublist] for sublist in patient_readings]
-    false = False
+    patient_readings_len = [len(subset)for subset in patient_readings]
+    if 10 not in patient_readings_len:
+        return print(False)
+    try: 
+       patient_readings_float = [[float(readings) for readings in sublist] for sublist in patient_readings]
+    except ValueError:
+       return print(False)
     patient_readings_valid_or_not_valid = [[float > 9.9 for float in subset ] for subset in patient_readings_float]
     if True in patient_readings_valid_or_not_valid: 
         return print(False)
     else:
         return print(True)
  
+
        
-check_for_valid_reading_values("patient files/not valid/1/MED_DATA_120603189004.csv")
+check_for_valid_reading_values("patient files/not valid/2/MED_DATA_20230512140104(MED_DATA_20230512140104).csv")
