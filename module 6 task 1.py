@@ -101,7 +101,7 @@ def check_for_invalid_field_name(patient):
    total_columns = len(first_row)
    if readings_sorted != reading_rejoined:
          return print(False)
-   elif ( total_columns != 12 or total_columns > 13):
+   elif ( total_columns != 12 ):
        return False 
    elif first_row[0] != "batch_id" or first_row[1] != "timestamp":
         return print(False)
@@ -158,16 +158,16 @@ def check_for_0_byte(file_import):
    
 #check_for_0_byte("patient files/valid/valid data(MED_DATA_20230603140104).csv")
 
+#-------------------------------------
+# moving on because i need assistence
+#-------------------------------------
 def test_check_for_malformed_file(file):
     patient_data = []
     length_of_patient_row = []
     file_opened = open(file, mode="r")
-    patient_data.append([readings.split(",") for readings in patient_data])
-    for elements in patient_data:
-        length_of_patient_row.append(len(elements))
-    if length_of_patient_row in patient_data != 11:
-       return False
-    for sublist in patient_data:
+    patient_data.append(file_opened.readlines())
+    return print(patient_data[0][3])
+    """for sublist in patient_data:
         if , at sublist[0]
            return False
     for sublist in patient_data:
@@ -181,10 +181,20 @@ def test_check_for_malformed_file(file):
     elif count_of_quotes / 2 != 11:
         return False
     elif count_of_quotes == 0:
-        return True
+        return True 
+        if "" in patient_data[0][1]: """
 
 
-      
-    
+#test_check_for_malformed_file("patient files/not valid/4/MED_DATA_20230303140104.csv")
+import shutil
+def test_move_files(file):
+   if file == True:
+       good_file = file
+       destination = "patient files/good files"
+       shutil.move(good_file, destination)
+   else:
+       bad_file = False:
+       destination = "patient files/bad files"
+       shutil.move(bad_file, destination)
 
-test_check_for_malformed_file("patient files/not valid/4/MED_DATA_20230303140104.csv")
+test_move_files("patient files/valid/MED_DATA_20230603140104.csv")
