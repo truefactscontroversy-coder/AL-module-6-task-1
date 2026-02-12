@@ -184,17 +184,18 @@ def test_check_for_malformed_file(file):
         return True 
         if "" in patient_data[0][1]: """
 
-
+good_file = True
+bad_file = False
 #test_check_for_malformed_file("patient files/not valid/4/MED_DATA_20230303140104.csv")
 import shutil
-def test_move_files(file):
-   if file == True:
+def move_files_unit(file, true_or_false):
+   if true_or_false == True:
        good_file = file
        destination = "patient files/good files"
        shutil.move(good_file, destination)
    else:
-       bad_file = False:
+       bad_file = file
        destination = "patient files/bad files"
        shutil.move(bad_file, destination)
 
-test_move_files("patient files/valid/MED_DATA_20230603140104.csv")
+move_files_unit("patient files/valid/MED_DATA_20230603140104.csv", good_file)
