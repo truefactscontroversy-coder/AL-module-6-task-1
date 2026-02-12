@@ -156,4 +156,35 @@ def check_for_0_byte(file_import):
    else:
       return print(True)
    
-check_for_0_byte("patient files/valid/valid data(MED_DATA_20230603140104).csv")
+#check_for_0_byte("patient files/valid/valid data(MED_DATA_20230603140104).csv")
+
+def test_check_for_malformed_file(file):
+    patient_data = []
+    length_of_patient_row = []
+    file_opened = open(file, mode="r")
+    patient_data.append([readings.split(",") for readings in patient_data])
+    for elements in patient_data:
+        length_of_patient_row.append(len(elements))
+    if length_of_patient_row in patient_data != 11:
+       return False
+    for sublist in patient_data:
+        if , at sublist[0]
+           return False
+    for sublist in patient_data:
+       if "" and '' in sublist:
+          return False
+    count_of_quotes = []
+    for sub_element in patient_data:
+        count_of_quotes.append(sub_element.count(" or '))
+    if count_of_quotes / 2:
+       return False
+    elif count_of_quotes / 2 != 11:
+        return False
+    elif count_of_quotes == 0:
+        return True
+
+
+      
+    
+
+test_check_for_malformed_file("patient files/not valid/4/MED_DATA_20230303140104.csv")
