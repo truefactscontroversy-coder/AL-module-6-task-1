@@ -148,7 +148,7 @@ def check_for_valid_reading_values(patient):
  
 #check_for_valid_reading_values("patient files/not valid/2/MED_DATA_20230512140104(MED_DATA_20230512140104).csv")
 import os
-def test_check_for_0_byte(file_import):
+def check_for_0_byte(file_import):
    file = file_import
    file_size = os.path.getsize(file)
    if file_size == 0:
@@ -156,4 +156,4 @@ def test_check_for_0_byte(file_import):
    else:
       return print(True)
    
-test_check_for_0_byte("patient files/valid/valid data.csv")
+check_for_0_byte("patient files/valid/valid data(MED_DATA_20230603140104).csv")
