@@ -127,12 +127,19 @@ def check_missing_column_row_and_invalid_entries(patient):
 
 #check_missing_column_row_and_invalid_entries("patient files/not valid/1/MED_DATA_120603189004.csv")
 
-def test_check_for_valid_reading_values(patientfile):
+def check_for_valid_reading_values(patient):
     extracted_patient_readings = []
-    patient_data = open(patientfile, newline="")
-    extracted_patient_readings.append([readings.split("to isolate readings")[] for readings in patient_data])
-    for reading in extracted_patient_readings:
-       if reading > 9.9:
-          return False
+    patient_data = open(patient, newline="")
+    extracted_patient_readings.append([readings.split(",")[2:] for readings in patient_data])
+    patient_readings = extracted_patient_readings[0]
+    patient_readings = patient_readings[1:]
+    patient_readings_float = [[float(readings) for readings in sublist] for sublist in patient_readings]
+    false = False
+    patient_readings_valid_or_not_valid = [[float > 9.9 for float in subset ] for subset in patient_readings_float]
+    if True in patient_readings_valid_or_not_valid: 
+        return print(False)
+    else:
+        return print(True)
+ 
        
-test_check_for_valid_reading_values("patient files/valid/valid data(MED_DATA_20230603140104).csv")
+check_for_valid_reading_values("patient files/not valid/1/MED_DATA_120603189004.csv")
