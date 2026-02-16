@@ -86,7 +86,7 @@ def check_for_dup_batch_ID(patient):
     batch_ID = Counter(batch_id)
     ID_amount_list = list(batch_ID.values())
     if any(id != 1 for id in ID_amount_list):
-        return print(False)
+        return False
     else:
         return True   
 #check_for_dup_batch_ID("patient files/valid/MED_DATA_20230603140104.csv")
@@ -103,13 +103,13 @@ def check_for_invalid_field_name(patient):
    readings_count = len(readings)
    total_columns = len(first_row)
    if readings_sorted != reading_rejoined:
-         return print(False)
+         return False
    elif ( total_columns != 12 ):
        return False 
    elif first_row[0] != "batch_id" or first_row[1] != "timestamp":
-        return print(False)
+        return False
    elif readings_count != 10:
-        return print(False)
+        return False
    else:
       return True
    
@@ -126,7 +126,7 @@ def check_missing_column_row_and_invalid_entries(patient):
        is_row_12.append(len(batches))
    for numb in row_of_patient_data:
        if len(numb) != 12:
-          return print("fluffy")
+          return False
        else:
           return True
                                   
@@ -141,14 +141,14 @@ def check_for_valid_reading_values(patient):
     patient_readings = patient_readings[1:]
     patient_readings_len = [len(subset)for subset in patient_readings]
     if 10 not in patient_readings_len:
-        return print(False)
+        return False
     try: 
        patient_readings_float = [[float(readings) for readings in sublist] for sublist in patient_readings]
     except ValueError:
-       return print(False)
+       return False
     patient_readings_valid_or_not_valid = [[float > 9.9 for float in subset ] for subset in patient_readings_float]
     if True in patient_readings_valid_or_not_valid: 
-        return print(False)
+        return False
     else:
         return True
  
@@ -158,7 +158,7 @@ def check_for_0_byte(file_import):
    file = file_import
    file_size = os.path.getsize(file)
    if file_size == 0:
-      return print(False)
+      return False
    else:
       return True
    
@@ -205,8 +205,7 @@ def move_good_file_unit(file):
 
 #move_files_unit("patient files/valid/MED_DATA_20230603140104.csv", good_file)
 def test_for_valid_file(patient_file):
-    if patient_file_unknow == True:
-        patient_file_unknow = check_for_dup_batch_ID(patient_file)
+    patient_file_unknow = check_for_dup_batch_ID(patient_file)
     if patient_file_unknow == True:
         patient_file_unknow = check_for_invalid_field_name(patient_file)
     if patient_file_unknow == True:
@@ -218,16 +217,17 @@ def test_for_valid_file(patient_file):
     if patient_file_unknow == True:
         patient_file_unknow = check_for_0_byte(patient_file)
     if patient_file_unknow == True:
-        move_good_file_unit(patient_file)
+        return True
+        
 
 def test_file_for_true_or_false(file):
-    patient_file_unknown = file
-    patient_file_unknown = check_for_valid_format(file_not_opened)
+    patient_data = file
+    patient_file_unknown = check_for_valid_format(patient_data)
     if patient_file_unknown == True:
-        patients_data = open_patient_file_and_save_data(file_opened)
-    if patients_data == True:
-        move_good_file_unit(file)
+        patient_known_data = test_for_valid_file (patient_data)
+    if patient_known_data == True:
+        move_good_file_unit(patient_data)
     else:
-        move_bad_files_unit(file)
+        move_bad_files_unit(patient_data)
    
-test_for_valid_file("patient files/valid/MED_DATA_20230603140104.csv")
+test_file_for_true_or_false("patient files/valid/new valid data(MED_DATA_20230603140104).csv")
