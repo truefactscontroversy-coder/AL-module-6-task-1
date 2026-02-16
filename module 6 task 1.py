@@ -22,11 +22,6 @@ open file unit
 i will be using a mock file created from appedix example as the file generation has not been set up
 """
 #-----------------------------------------------------------------------------------------------------
-def open_patient_file_and_save_data(patient):
-  patient1 = open(patient, "r")
-  return print(type(patient1)), print(patient1.read()), patient1
-   
-# open_patient_file_and_save_data("patient files/valid/MED_DATA_20230603140104.csv")
 
 #---------------------------------------------
 # validation check for correct date format
@@ -65,8 +60,16 @@ def check_for_valid_format(patient):
     elif numbsec > 61:
       return False
     else:
-      return print(True) 
-# patient = check_for_valid_format("patient files/valid/MED_DATA_20230603140104.csv")
+      return True 
+
+
+
+def open_patient_file_and_save_data(patient):
+  patient1 = open(patient, "r")
+  return print(type(patient1)), print(patient1.read()), patient1
+   
+#patients_data = "patient files/not valid/1/MED_DATA_120603189004.csv"
+
 
 #----------------------------------------
 # batch ID duplication check unit
@@ -85,11 +88,11 @@ def check_for_dup_batch_ID(patient):
     if any(id != 1 for id in ID_amount_list):
         return print(False)
     else:
-        return print(True)   
-#check_for_dup_batch_ID("patient files/not valid/1/MED_DATA_120603189004.csv")
+        return True   
+#check_for_dup_batch_ID("patient files/valid/MED_DATA_20230603140104.csv")
 
 def check_for_invalid_field_name(patient):
-   column_names = open(patient, "r")
+   column_names = open(patient)
    first_column = column_names.readline()
    first_row = first_column.split(",")
    readings = first_row[2:]
@@ -108,24 +111,27 @@ def check_for_invalid_field_name(patient):
    elif readings_count != 10:
         return print(False)
    else:
-      return print(True)
+      return True
    
 
 #check_for_invalid_field_name("patient files/valid/valid data.csv")
 
 def check_missing_column_row_and_invalid_entries(patient):
    row_of_patient_data = []
+   is_row_12 = []
    patient_data = open(patient, newline="") 
    for row in patient_data:
        row_of_patient_data.append(row.split(","))
-   for batch in row_of_patient_data:
-       if len(batch) != 12:
-          return print(False)
+   for batches in row_of_patient_data:
+       is_row_12.append(len(batches))
+   for numb in row_of_patient_data:
+       if len(numb) != 12:
+          return print("fluffy")
        else:
-          return print(True)
+          return True
                                   
 
-#check_missing_column_row_and_invalid_entries("patient files/not valid/1/MED_DATA_120603189004.csv")
+#check_missing_column_row_and_invalid_entries("patient files/valid/MED_DATA_20230603140104.csv")
 
 def check_for_valid_reading_values(patient):
     extracted_patient_readings = []
@@ -144,7 +150,7 @@ def check_for_valid_reading_values(patient):
     if True in patient_readings_valid_or_not_valid: 
         return print(False)
     else:
-        return print(True)
+        return True
  
 #check_for_valid_reading_values("patient files/not valid/2/MED_DATA_20230512140104(MED_DATA_20230512140104).csv")
 import os
@@ -154,7 +160,7 @@ def check_for_0_byte(file_import):
    if file_size == 0:
       return print(False)
    else:
-      return print(True)
+      return True
    
 #check_for_0_byte("patient files/valid/valid data(MED_DATA_20230603140104).csv")
 
@@ -184,18 +190,44 @@ def test_check_for_malformed_file(file):
         return True 
         if "" in patient_data[0][1]: """
 
-good_file = True
-bad_file = False
 #test_check_for_malformed_file("patient files/not valid/4/MED_DATA_20230303140104.csv")
-import shutil
-def move_files_unit(file, true_or_false):
-   if true_or_false == True:
-       good_file = file
-       destination = "patient files/good files"
-       shutil.move(good_file, destination)
-   else:
-       bad_file = file
-       destination = "patient files/bad files"
-       shutil.move(bad_file, destination)
 
-move_files_unit("patient files/valid/MED_DATA_20230603140104.csv", good_file)
+import shutil
+def move_bad_files_unit(file):
+    bad_file = file
+    destination = "patient files/bad files"
+    shutil.move(bad_file, destination)
+
+def move_good_file_unit(file):
+    good_file = file
+    destination = "patient files/good files"
+    shutil.move(good_file, destination)
+
+#move_files_unit("patient files/valid/MED_DATA_20230603140104.csv", good_file)
+def test_for_valid_file(patient_file):
+    if patient_file_unknow == True:
+        patient_file_unknow = check_for_dup_batch_ID(patient_file)
+    if patient_file_unknow == True:
+        patient_file_unknow = check_for_invalid_field_name(patient_file)
+    if patient_file_unknow == True:
+        patient_file_unknow = check_missing_column_row_and_invalid_entries(patient_file)
+    if patient_file_unknow == True:
+        patient_file_unknow = check_missing_column_row_and_invalid_entries(patient_file)
+    if patient_file_unknow == True:
+        patient_file_unknow = check_for_valid_reading_values(patient_file)
+    if patient_file_unknow == True:
+        patient_file_unknow = check_for_0_byte(patient_file)
+    if patient_file_unknow == True:
+        move_good_file_unit(patient_file)
+
+def test_file_for_true_or_false(file):
+    patient_file_unknown = file
+    patient_file_unknown = check_for_valid_format(file_not_opened)
+    if patient_file_unknown == True:
+        patients_data = open_patient_file_and_save_data(file_opened)
+    if patients_data == True:
+        move_good_file_unit(file)
+    else:
+        move_bad_files_unit(file)
+   
+test_for_valid_file("patient files/valid/MED_DATA_20230603140104.csv")
