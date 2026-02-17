@@ -16,12 +16,7 @@ ftp.nlst("lists all files in the ftp directory")
 # moving on because ftp server is not set up yet
 #------------------------------------------------------
 
-#-----------------------------------------------------------------------------------------------------
-""" 
-open file unit
-i will be using a mock file created from appedix example as the file generation has not been set up
-"""
-#-----------------------------------------------------------------------------------------------------
+
 
 #---------------------------------------------
 # validation check for correct date format
@@ -64,11 +59,6 @@ def check_for_valid_format(patient):
 
 
 
-def open_patient_file_and_save_data(patient):
-  patient1 = open(patient, "r")
-  return print(type(patient1)), print(patient1.read()), patient1
-   
-#patients_data = "patient files/not valid/1/MED_DATA_120603189004.csv"
 
 
 #----------------------------------------
@@ -218,16 +208,19 @@ def test_for_valid_file(patient_file):
         patient_file_unknow = check_for_0_byte(patient_file)
     if patient_file_unknow == True:
         return True
-        
+    else:
+        return False
 
 def test_file_for_true_or_false(file):
     patient_data = file
     patient_file_unknown = check_for_valid_format(patient_data)
     if patient_file_unknown == True:
         patient_known_data = test_for_valid_file (patient_data)
-    if patient_known_data == True:
-        move_good_file_unit(patient_data)
+        if patient_known_data == True:
+            move_good_file_unit(patient_data)
+        else:
+            move_bad_files_unit(patient_data)
     else:
         move_bad_files_unit(patient_data)
    
-test_file_for_true_or_false("patient files/valid/new valid data(MED_DATA_20230603140104).csv")
+#test_file_for_true_or_false("patient files/not valid/2/MED_DATA_20230512140104.csv")
