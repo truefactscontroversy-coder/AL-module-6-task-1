@@ -1,20 +1,24 @@
 
-from ftplib import FTP
 
-""" 
-def test_open_remote_FTP_server():
-    ftp.connect("server url")
-"""
-#---------------------------------------------------------------------------    
-# moving onto file opening function as the mock ftp server is not built yet
-#---------------------------------------------------------------------------
-""" 
-def test_show_all_dict_names():
-ftp.nlst("lists all files in the ftp directory")
-"""
-#------------------------------------------------------
-# moving on because ftp server is not set up yet
-#------------------------------------------------------
+from ftplib import FTP
+import ftplib
+import ssl
+
+def open_remote_FTP_server_and_download_files(host, port, username, passwd, directory):
+
+    ftp = FTP()
+    ftp.connect(host, port, None)
+    ftp.login( username, passwd)
+    patient = ftp.cwd(directory)
+    files = ftp.nlst()
+    return files
+    
+
+
+
+data = open_remote_FTP_server_and_download_files("127.0.0.1", 21, "FTP for school", "FTPforschool246","/FTPschool/FTP files")
+
+
 
 
 
@@ -38,7 +42,7 @@ def check_for_valid_format(patient):
     numbhour = int(hour)
     minute = numb[10:12]
     numbmin = int(minute)
-    second = numb[12:]
+    second = numb[12:14]
     numbsec = int(second)
     if numbcentury != 20:
      return False
@@ -56,8 +60,6 @@ def check_for_valid_format(patient):
       return False
     else:
       return True 
-
-
 
 
 
