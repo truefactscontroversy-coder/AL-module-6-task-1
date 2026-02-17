@@ -3,15 +3,20 @@
 from ftplib import FTP
 import ftplib
 import ssl
+import os
 
 def open_remote_FTP_server_and_download_files(host, port, username, passwd, directory):
-
     ftp = FTP()
     ftp.connect(host, port, None)
     ftp.login( username, passwd)
     patient = ftp.cwd(directory)
-    files = ftp.nlst()
-    return files
+    ftp_files = ftp.nlst()
+    ftp.quit()
+    downloaded_folder = "patient files/good files"
+    downloaded_files = set(os.listdir(downloaded_folder))
+    new_file = [file for file in ftp_files if file not in downloaded_files]
+    return new_file
+
     
 
 
