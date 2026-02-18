@@ -3,6 +3,7 @@
 from ftplib import FTP
 import ftplib
 import ssl
+import csv 
 import os
 
 def open_remote_FTP_server_and_download_files(host, port, username, passwd, directory):
@@ -21,7 +22,7 @@ def open_remote_FTP_server_and_download_files(host, port, username, passwd, dire
 
 
 
-data = open_remote_FTP_server_and_download_files("127.0.0.1", 21, "FTP for school", "FTPforschool246","/FTPschool/FTP files")
+
 
 
 
@@ -72,7 +73,7 @@ def check_for_valid_format(patient):
 # batch ID duplication check unit
 #----------------------------------------
 
-import csv 
+
 from collections import Counter
 
 def check_for_dup_batch_ID(patient):
@@ -150,7 +151,7 @@ def check_for_valid_reading_values(patient):
         return True
  
 #check_for_valid_reading_values("patient files/not valid/2/MED_DATA_20230512140104(MED_DATA_20230512140104).csv")
-import os
+
 def check_for_0_byte(file_import):
    file = file_import
    file_size = os.path.getsize(file)
@@ -218,6 +219,10 @@ def test_for_valid_file(patient_file):
     else:
         return False
 
+
+
+data = open_remote_FTP_server_and_download_files("127.0.0.1", 21, "FTP for school", "FTPforschool246","/FTPschool/FTP files")
+
 def test_file_for_true_or_false(file):
     patient_data = file
     patient_file_unknown = check_for_valid_format(patient_data)
@@ -230,4 +235,7 @@ def test_file_for_true_or_false(file):
     else:
         move_bad_files_unit(patient_data)
    
-#test_file_for_true_or_false("patient files/not valid/2/MED_DATA_20230512140104.csv")
+   while files in data:
+    test_file_for_true_or_false(files)
+    if files not in data:
+        break
