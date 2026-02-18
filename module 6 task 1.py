@@ -6,25 +6,24 @@ import ssl
 import csv 
 import os
 
-def open_remote_FTP_server_and_download_files(host, port, username, passwd, directory):
+def open_remote_FTP_server_and_download_files(host, port, username, passwd, directory, local):
     ftp = FTP()
     ftp.connect(host, port, None)
     ftp.login( username, passwd)
-    patient = ftp.cwd(directory)
-    ftp_files = ftp.nlst()
-    ftp.quit()
-    downloaded_folder = "patient files/good files"
+    ftp.cwd(directory)
+    patient_files = ftp.nlst()
+    downloaded_folder = "patient files/unknown files"
     downloaded_files = set(os.listdir(downloaded_folder))
-    new_file = [file for file in ftp_files if file not in downloaded_files]
-    return new_file
-
+    filtered_patient_files = [file for file in patient_files if file not in downloaded_files]
+    for files in filtered_patient_files:
+        local_path = os.path.join(local, files)
+        with open(local_path, "wb") as newfile:
+            ftp.retrbinary(f"RETR {files}", newfile.write)
+    ftp.quit()
     
 
-
-
-
-
-
+    
+open_remote_FTP_server_and_download_files("127.0.0.1", 21, "FTP for school", "FTPforschool246","/FTPschool/files for ftp", "patient files\\unknown files")
 
 
 
@@ -221,7 +220,10 @@ def test_for_valid_file(patient_file):
 
 
 
-data = open_remote_FTP_server_and_download_files("127.0.0.1", 21, "FTP for school", "FTPforschool246","/FTPschool/FTP files")
+
+
+
+
 
 def test_file_for_true_or_false(file):
     patient_data = file
@@ -229,13 +231,20 @@ def test_file_for_true_or_false(file):
     if patient_file_unknown == True:
         patient_known_data = test_for_valid_file (patient_data)
         if patient_known_data == True:
+            return print ("fluffy")
             move_good_file_unit(patient_data)
         else:
+            return print("not fluffy")
             move_bad_files_unit(patient_data)
     else:
         move_bad_files_unit(patient_data)
+        return print("not fluffy")
    
-   while files in data:
-    test_file_for_true_or_false(files)
-    if files not in data:
-        break
+
+
+"""current_file = data.pop(1)
+while data:
+    test_file_for_true_or_false(current_file)
+    current_file = data.pop(1)"""
+
+#print("done!")
