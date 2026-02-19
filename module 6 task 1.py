@@ -194,12 +194,12 @@ def test_check_for_malformed_file(file):
 import shutil
 def move_bad_files_unit(file):
     bad_file = file
-    destination = "patient files/bad files"
+    destination = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\bad files"
     shutil.move(bad_file, destination)
 
 def move_good_file_unit(file):
     good_file = file
-    destination = "patient files/good files"
+    destination = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\good files"
     shutil.move(good_file, destination)
 
 #move_files_unit("patient files/valid/MED_DATA_20230603140104.csv", good_file)
@@ -230,14 +230,12 @@ def test_file_for_true_or_false(file):
     if patient_file_unknown == True:
         patient_known_data = test_for_valid_file (patient_data)
         if patient_known_data == True:
-            return print ("fluffy")
-            #move_good_file_unit(patient_data)
+            move_good_file_unit(patient_data)
         else:
-            return print("not fluffy")
-            #move_bad_files_unit(patient_data)
+            move_bad_files_unit(patient_data)
     else:
-        #move_bad_files_unit(patient_data)
-        return print("not fluffy")
+        move_bad_files_unit(patient_data)
+        
    
 
 #
@@ -245,8 +243,8 @@ def test_file_for_true_or_false(file):
 #
 
 from pathlib import Path
-open_remote_FTP_server_and_download_files(host,port, username, password, ftp directory, destination folder)
-unknown_file_folder = r"file path"
+open_remote_FTP_server_and_download_files("127.0.0.1", 21, "FTP for school", "FTPforschool246","/FTPschool/files for ftp", "patient files\\unknown files")
+unknown_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\unknown files"
 os.chdir(unknown_file_folder)
 downloaded_files = os.listdir()
 for files in downloaded_files:
