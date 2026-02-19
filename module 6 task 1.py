@@ -12,9 +12,11 @@ def open_remote_FTP_server_and_download_files(host, port, username, passwd, dire
     ftp.login( username, passwd)
     ftp.cwd(directory)
     patient_files = ftp.nlst()
-    downloaded_folder = "patient files/unknown files"
-    downloaded_files = set(os.listdir(downloaded_folder))
-    filtered_patient_files = [file for file in patient_files if file not in downloaded_files]
+    downloaded_good_folder = "patient files/good files"
+    downloaded_good_files = set(os.listdir(downloaded_good_folder))
+    downloaded_bad_folder = "patient files/bad files"
+    downloaded_bad_files = set(os.listdir(downloaded_bad_folder))
+    filtered_patient_files = [file for file in patient_files if file not in (downloaded_good_files or downloaded_bad_files)]
     for files in filtered_patient_files:
         local_path = os.path.join(local, files)
         with open(local_path, "wb") as newfile:
@@ -23,7 +25,7 @@ def open_remote_FTP_server_and_download_files(host, port, username, passwd, dire
     
 
     
-open_remote_FTP_server_and_download_files("127.0.0.1", 21, "FTP for school", "FTPforschool246","/FTPschool/files for ftp", "patient files\\unknown files")
+
 
 
 
@@ -77,7 +79,7 @@ from collections import Counter
 
 def check_for_dup_batch_ID(patient):
     extracted_batch_ID = []
-    patient_data = open(patient, newline="")
+    patient_data =  open(patient, newline="")
     extracted_batch_ID.append([row.split(",")[0] for row in patient_data])
     batch_id = tuple(extracted_batch_ID[0])
     batch_ID = Counter(batch_id)
@@ -222,9 +224,6 @@ def test_for_valid_file(patient_file):
 
 
 
-
-
-
 def test_file_for_true_or_false(file):
     patient_data = file
     patient_file_unknown = check_for_valid_format(patient_data)
@@ -232,19 +231,24 @@ def test_file_for_true_or_false(file):
         patient_known_data = test_for_valid_file (patient_data)
         if patient_known_data == True:
             return print ("fluffy")
-            move_good_file_unit(patient_data)
+            #move_good_file_unit(patient_data)
         else:
             return print("not fluffy")
-            move_bad_files_unit(patient_data)
+            #move_bad_files_unit(patient_data)
     else:
-        move_bad_files_unit(patient_data)
+        #move_bad_files_unit(patient_data)
         return print("not fluffy")
    
 
+#
+# integration unit for all units
+#
 
-"""current_file = data.pop(1)
-while data:
-    test_file_for_true_or_false(current_file)
-    current_file = data.pop(1)"""
+from pathlib import Path
+open_remote_FTP_server_and_download_files(host,port, username, password, ftp directory, destination folder)
+unknown_file_folder = r"file path"
+os.chdir(unknown_file_folder)
+downloaded_files = os.listdir()
+for files in downloaded_files:
+    test_file_for_true_or_false(files)
 
-#print("done!")
