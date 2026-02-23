@@ -3,6 +3,9 @@ import logging
 import requests
 
 
+def add(a, b):
+    a += b
+    return a
 
 
 def automated_logging(log_message):
@@ -36,3 +39,4 @@ def automated_logging(log_message):
 
     return logger.info(log_message)
  
+automated_logging(add(5,5))
