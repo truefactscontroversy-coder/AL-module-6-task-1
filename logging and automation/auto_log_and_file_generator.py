@@ -1,7 +1,7 @@
 import logging
 import requests
 import random
-
+from datetime import datetime
 
 
 def auto_log(log_message):
@@ -52,7 +52,18 @@ def random_headers():
     
     return shuffled_headers 
 
+def correct_filename_generator():
+    patient_data_name = ""
+    start_date = "20230603140104"
+    end_date = "20261231235959"
+    start_date = datetime.strptime(start_date, "format")
+    end_date = datetime.strptime(end_date, "format")
+    random_date = start_date + (end_date - start_date) * random.random()
+    random_date = random_date.strftime("format")
+    patient_data_name = "MED_DATA_" + str(random_date)
+    return patient_data_name
 
 
 def correct_file_generator():
     file = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
+
