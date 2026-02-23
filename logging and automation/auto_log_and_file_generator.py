@@ -1,7 +1,7 @@
 import logging
 import requests
 import random
-from pandas import pd
+import os
 import csv
 
 
@@ -57,8 +57,10 @@ def random_headers():
 
 def correct_file_generator():
     file_data = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
-    file_path_for_ftp_file_folder = "filepath"
-    with open(file_path_for_ftp_file_folder, mode="w") as folder:
+    file_path_for_ftp_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp"
+    mock_filename = "MED_DATA_20230603140104.csv"
+    file_path = os.path.join(file_path_for_ftp_file_folder, mock_filename)
+    with open(file_path, mode="w") as folder:
         file_created = csv.writer(folder)
         file_created.writerow(file_data)
 
