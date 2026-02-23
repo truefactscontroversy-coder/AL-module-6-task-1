@@ -1,14 +1,9 @@
 import logging
 import requests
 import random
-<<<<<<< HEAD
 import os
 import csv
 from datetime import datetime
-=======
-from datetime import datetime
-
->>>>>>> bd6e89d3546edb14f371f1b13312a814dbe6a702
 
 def auto_log(log_message):
     api_url = "https://www.uuidtools.com/api/generate/v1"
@@ -62,35 +57,56 @@ def correct_filename_generator():
     patient_data_name = ""
     start_date = "20230603140104"
     end_date = "20261231235959"
-<<<<<<< HEAD
     start_date = datetime.strptime(start_date, "%Y%m%d%H%M%S")
     end_date = datetime.strptime(end_date, "%Y%m%d%H%M%S")
     random_date = start_date + (end_date - start_date) * random.random()
     random_date = random_date.strftime("%Y%m%d%H%M%S")
-=======
-    start_date = datetime.strptime(start_date, "format")
-    end_date = datetime.strptime(end_date, "format")
-    random_date = start_date + (end_date - start_date) * random.random()
-    random_date = random_date.strftime("format")
->>>>>>> bd6e89d3546edb14f371f1b13312a814dbe6a702
-    patient_data_name = "MED_DATA_" + str(random_date)
+    patient_data_name = "MED_DATA_" + str(random_date) + ".csv"
     return patient_data_name
 
+# random.randint(1, 10) will produce dups
 
-auto_log(correct_filename_generator())
 
 def correct_file_generator():
-<<<<<<< HEAD
     file_data = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
-    file_path_for_ftp_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp"
-    mock_filename = "MED_DATA_20230603140104.csv"
-    file_path = os.path.join(file_path_for_ftp_file_folder, mock_filename)
+    
+
+    random_batchid = []
+    while len(random_batchid) != 10:
+        for numb in range(10):
+            id = random.randint(1, 999)
+            if id not in random_batchid:
+                    random_batchid.append(id)
+    
+    
+    random_timestamp = ""
+    random_readings = []
+    random_readings_row = []
+        
+
+    
+        
+         
+    while len(random_readings) != 10:
+        for numb in range(10):
+            id = random.uniform(1, 9.9)
+            if id not in random_readings:
+                random_readings_row.append(id)
+  
+    
+    
+
+        
+    return file_data
+    
+   
+
+
+
+
+#file_path_for_ftp_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp"
+"""mock_filename = correct_filename_generator()
+file_path = os.path.join(file_path_for_ftp_file_folder, mock_filename)
     with open(file_path, mode="w") as folder:
         file_created = csv.writer(folder)
-        file_created.writerow(file_data)
-
-correct_file_generator()
-=======
-    file = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
-
->>>>>>> bd6e89d3546edb14f371f1b13312a814dbe6a702
+        file_created.writerow(file_data)"""
