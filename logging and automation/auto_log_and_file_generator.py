@@ -57,10 +57,10 @@ def correct_filename_generator():
     patient_data_name = ""
     start_date = "20230603140104"
     end_date = "20261231235959"
-    start_date = datetime.strptime(start_date, "chosen format")
-    end_date = datetime.strptime(end_date, "chosen format")
+    start_date = datetime.strptime(start_date, "%Y%m%d%H%M%S")
+    end_date = datetime.strptime(end_date, "%Y%m%d%H%M%S")
     random_date = start_date + (end_date - start_date) * random.random()
-    random_date = random_date.strftime("chosen format")
+    random_date = random_date.strftime("%Y%m%d%H%M%S")
     patient_data_name = "MED_DATA_" + str(random_date)
     return patient_data_name
 
