@@ -15,7 +15,7 @@ def auto_log(log_message):
     logger.setLevel(logging.INFO)
 
     formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(module)s:%(custom_attribute)s:%(message)s")
-    file_handler = logging.FileHandler(r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\file_logs.txt", mode='a')
+    file_handler = logging.FileHandler(r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1-1\File_for_logs.txt", mode='a')
     file_handler.setFormatter(formatter)
 
     old_factory = logging.getLogRecordFactory()
@@ -100,7 +100,7 @@ def correct_file_generator():
     return file_data
     
    
-
+print(correct_file_generator())
 
 
 
