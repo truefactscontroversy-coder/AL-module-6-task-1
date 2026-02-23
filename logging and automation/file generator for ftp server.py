@@ -1,12 +1,13 @@
-from api_error_log_tool import automated_logging as log
+
 
 import random
-import string
+
 
 
 def random_headers():
-    headers = ["headers"]
-
+    headers = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
+    shuffled_headers = []
+    new_headers = []
     for header in headers:
         new_headers.append(list(header))
     
@@ -14,9 +15,8 @@ def random_headers():
         current_header = index
         indx = random.randrange(len(index))
         current_header.pop(indx)
-        index = "".join(index)
         shuffled_headers.append(index)
-    return print(shuffled_headers) 
+        return shuffled_headers 
 
 
-log(random_headers())
+
