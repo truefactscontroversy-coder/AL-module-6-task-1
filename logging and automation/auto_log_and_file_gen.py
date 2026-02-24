@@ -1,3 +1,4 @@
+
 import logging
 import requests
 import random
@@ -15,7 +16,7 @@ def auto_log(log_message):
     logger.setLevel(logging.INFO)
 
     formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(module)s:%(custom_attribute)s:%(message)s")
-    file_handler = logging.FileHandler(r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1-1\File_for_logs.txt", mode='a')
+    file_handler = logging.FileHandler(r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\file_logs.txt", mode='a')
     file_handler.setFormatter(formatter)
 
     old_factory = logging.getLogRecordFactory()
@@ -68,7 +69,7 @@ def correct_filename_generator():
 
 
 def correct_file_generator():
-    file_data = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
+    file_data = [["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]]
     
 
     random_batchid = []
@@ -76,37 +77,47 @@ def correct_file_generator():
         for numb in range(10):
             id = random.randint(1, 999)
             if id not in random_batchid:
-                    random_batchid.append(id)
+                random_batchid.append(id)
     
     
     random_timestamp = ""
     random_readings = []
-    random_readings_row = []
-        
 
+    def row_data():
+        data_for_row = []    
+        for date in range(1):
+            start_date = "010101"
+            end_date = "235959"
+            start_date = datetime.strptime(start_date, "%H%M%S")
+            end_date = datetime.strptime(end_date, "%H%M%S")
+            random_date = start_date + (end_date - start_date) * random.random()
+            random_date = random_date.strftime("%H:%M:%S")
+            random_timestamp = str(random_date)
     
-        
+    
          
-    while len(random_readings) != 10:
-        for numb in range(10):
-            id = random.uniform(1, 9.9)
+        while len(random_readings) != 10:
+            id = round(random.uniform(1, 9.9), 3)
             if id not in random_readings:
-                random_readings_row.append(id)
-  
-    
-    
-
+                random_readings.append(id)
         
-    return file_data
+        data_for_row.append(random_timestamp)
+        data_for_row.extend(random_readings)
+        return data_for_row
     
-   
-print(correct_file_generator())
+    while random_batchid:
+        data = row_data()
+        data.insert(0, random_batchid.pop(0))
+        file_data.append(list(data))
 
 
-
-#file_path_for_ftp_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp"
-"""mock_filename = correct_filename_generator()
-file_path = os.path.join(file_path_for_ftp_file_folder, mock_filename)
-    with open(file_path, mode="w") as folder:
+    file_path_for_ftp_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp\correct files"
+    mock_filename = correct_filename_generator()
+    file_path = os.path.join(file_path_for_ftp_file_folder, mock_filename)
+    with open(file_path, mode="w", newline="") as folder:
         file_created = csv.writer(folder)
-        file_created.writerow(file_data)"""
+        file_created.writerows(list(file_data))
+    
+    return file_data
+
+auto_log(correct_file_generator())
