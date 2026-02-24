@@ -38,7 +38,7 @@ def auto_log(log_message):
 
 
 
-def random_headers():
+def random_invalid_headers():
     headers = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
     shuffled_headers = []
     new_headers = []
@@ -53,6 +53,19 @@ def random_headers():
         shuffled_headers.append(current_header)
     
     return shuffled_headers 
+
+def invalid_filename_generator():
+    patient_data_name = ""
+    start_date = "01202701010101"
+    end_date = "23209059123159"
+    start_date = datetime.strptime(start_date, "chosen format")
+    end_date = datetime.strptime(end_date, "chosen format")
+    random_date = start_date + (end_date - start_date) * random.random()
+    random_date = random_date.strftime("chosen format")
+    patient_data_name = "MED_DATA_" + str(random_date) + ".csv"
+    return patient_data_name
+
+print(invalid_filename_generator())
 
 def correct_filename_generator():
     patient_data_name = ""
@@ -120,4 +133,3 @@ def correct_file_generator():
     
     return file_data
 
-auto_log(correct_file_generator())
