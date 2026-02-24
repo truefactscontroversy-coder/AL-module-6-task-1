@@ -58,10 +58,10 @@ def invalid_filename_generator():
     patient_data_name = ""
     start_date = "01202701010101"
     end_date = "23209059123159"
-    start_date = datetime.strptime(start_date, "chosen format")
-    end_date = datetime.strptime(end_date, "chosen format")
+    start_date = datetime.strptime(start_date, "%H%Y%M%m%d%S")
+    end_date = datetime.strptime(end_date, "%H%Y%M%m%d%S")
     random_date = start_date + (end_date - start_date) * random.random()
-    random_date = random_date.strftime("chosen format")
+    random_date = random_date.strftime("%H%Y%M%m%d%S")
     patient_data_name = "MED_DATA_" + str(random_date) + ".csv"
     return patient_data_name
 
