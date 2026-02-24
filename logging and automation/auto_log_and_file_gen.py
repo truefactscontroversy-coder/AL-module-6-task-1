@@ -78,8 +78,56 @@ def invalid_batchid_generator():
     random_id.insert(index,dup_id)
     return random_id
 
-print(invalid_batchid_generator())
+def invalid_file_generator():
+    invalid_filename = invalid_filename_generator()
+    invalid_batchid = invalid_batchid_generator()
+    invalid_headers = random_invalid_headers()
+    invalid_file_data = []
+    invalid_file_data.append(invalid_headers)
+    def invalid_row_data():
+        row_data = []  
+        for date in range(1):
+            start_date = "010101"
+            end_date = "235959"
+            start_date = datetime.strptime(start_date, "%H%M%S")
+            end_date = datetime.strptime(end_date, "%H%M%S")
+            random_date = start_date + (end_date - start_date) * random.random()
+            random_date = random_date.strftime("%H:%M:%S")
+            random_timestamp = str(random_date)
+            row_data.append(random_timestamp)
+    
 
+        reading_numb = random.randint(1,3)
+        for x in range(reading_numb):
+            readings_amount = random.randint(1,20)
+            for x in range(readings_amount):
+                id = random.uniform(1, 20)
+                row_data.append(id)
+
+        return row_data
+    
+
+    
+    
+    while invalid_batchid:
+        row_info = invalid_row_data()
+        row_info.insert(0, invalid_batchid.pop(0))
+        invalid_file_data.append(row_info)
+        
+    
+
+    
+
+    file_path_for_ftp_invalid_files = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp\invalid files"
+
+    file_path = os.path.join(file_path_for_ftp_invalid_files, invalid_filename)
+    with open(file_path, mode="w", newline="") as folder:
+        file_created = csv.writer(folder)
+        file_created.writerows(list(invalid_file_data))
+    
+    
+
+print(invalid_file_generator())
 
 
 
