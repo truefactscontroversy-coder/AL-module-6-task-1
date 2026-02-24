@@ -68,14 +68,14 @@ def invalid_filename_generator():
 
 
 def invalid_batchid_generator():
-    numb_of_rows = random.randint(range)
+    numb_of_rows = random.randint(0, 20)
     random_id = []
     for x in range(numb_of_rows):
-        random_id.append(random.randint(range))
-    index_for_dup = random.randrange(len(index in random_id))
+        random_id.append(random.randint(1, 999))
+    index_for_dup = random.randrange(len(random_id))
     dup_id = random_id[index_for_dup]
-    index = random.randrange(len(index in random_id))
-    random_id.insert(index)
+    index = random.randrange(len(random_id))
+    random_id.insert(index,dup_id)
     return random_id
 
 print(invalid_batchid_generator())
