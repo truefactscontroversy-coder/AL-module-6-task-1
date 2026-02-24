@@ -65,7 +65,24 @@ def invalid_filename_generator():
     patient_data_name = "MED_DATA_" + str(random_date) + ".csv"
     return patient_data_name
 
-print(invalid_filename_generator())
+
+
+def invalid_batchid_generator():
+    numb_of_rows = random.randint(range)
+    random_id = []
+    for x in range(numb_of_rows):
+        random_id.append(random.randint(range))
+    index_for_dup = random.randrange(len(index in random_id))
+    dup_id = random_id[index_for_dup]
+    index = random.randrange(len(index in random_id))
+    random_id.insert(index)
+    return random_id
+
+print(invalid_batchid_generator())
+
+
+
+
 
 def correct_filename_generator():
     patient_data_name = ""
