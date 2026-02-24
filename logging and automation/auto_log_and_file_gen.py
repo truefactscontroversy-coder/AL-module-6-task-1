@@ -232,20 +232,31 @@ def invalid_file_generator():
 
     file_path_for_ftp_invalid_files = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp\invalid files"
 
-    file_path = os.path.join(file_path_for_ftp_invalid_files, invalid_filename)
+    file_path = os.path.join(file_path_for_ftp_invalid_files, file_name)
     with open(file_path, mode="w", newline="") as folder:
         file_created = csv.writer(folder)
         file_created.writerows(list(file_data))
     
-    
+  
 
-auto_log(invalid_file_generator())
+def empty_file_generator():
+    filename = []
+    invalid_filename = invalid_filename_generator()
+    correct_filename = correct_filename_generator()
+    filename.append(invalid_filename)
+    filename.append(correct_filename)
+    indx = random.randrange(2)
+    file_name = filename[indx]
+    file_path_for_ftp_invalid_files = "file path"
 
+    file_path = os.path.join(file_path_for_ftp_invalid_files, file_name)
+    with open(file_path, mode="w", newline="") as folder:
+        pass
+
+
+print(empty_file_generator())
 
 
 
 
 # random.randint(1, 10) will produce dups
-
-
-
