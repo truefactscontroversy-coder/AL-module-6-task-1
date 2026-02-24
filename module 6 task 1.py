@@ -5,6 +5,7 @@ import ftplib
 import ssl
 import csv 
 import os
+from datetime import datetime
 
 def open_remote_FTP_server_and_download_files(host, port, username, passwd, directory, local):
     ftp = FTP()
@@ -68,6 +69,24 @@ def check_for_valid_format(patient):
     else:
       return True 
 
+def check_valid_format(patient):
+    try:
+        numb = ""
+        for ch in patient:
+            if ch.isdigit():          
+                numb += ch
+        date = datetime.strptime(numb, "%Y%m%d%H%M%S")
+    except ValueError:
+        return False
+
+    return True
+   
+
+
+
+
+
+    
 
 
 #----------------------------------------
@@ -88,7 +107,7 @@ def check_for_dup_batch_ID(patient):
         return False
     else:
         return True   
-#check_for_dup_batch_ID("patient files/valid/MED_DATA_20230603140104.csv")
+
 
 def check_for_invalid_field_name(patient):
    column_names = open(patient)
@@ -113,7 +132,7 @@ def check_for_invalid_field_name(patient):
       return True
    
 
-#check_for_invalid_field_name("patient files/valid/valid data.csv")
+
 
 def check_missing_column_row_and_invalid_entries(patient):
    row_of_patient_data = []
@@ -130,7 +149,7 @@ def check_missing_column_row_and_invalid_entries(patient):
           return True
                                   
 
-#check_missing_column_row_and_invalid_entries("patient files/valid/MED_DATA_20230603140104.csv")
+
 
 def check_for_valid_reading_values(patient):
     extracted_patient_readings = []
@@ -151,7 +170,7 @@ def check_for_valid_reading_values(patient):
     else:
         return True
  
-#check_for_valid_reading_values("patient files/not valid/2/MED_DATA_20230512140104(MED_DATA_20230512140104).csv")
+
 
 def check_for_0_byte(file_import):
    file = file_import
@@ -161,7 +180,7 @@ def check_for_0_byte(file_import):
    else:
       return True
    
-#check_for_0_byte("patient files/valid/valid data(MED_DATA_20230603140104).csv")
+
 
 #-------------------------------------
 # moving on because i need assistence
@@ -243,15 +262,10 @@ def test_file_for_true_or_false(file):
 #
 
 from pathlib import Path
-open_remote_FTP_server_and_download_files("127.0.0.1", 21, "FTP for school", "FTPforschool246","/FTPschool/files for ftp", "patient files\\unknown files")
-unknown_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\unknown files"
-os.chdir(unknown_file_folder)
+#open_remote_FTP_server_and_download_files("127.0.0.1", 21, "FTP for school", "FTPforschool246","/FTPschool/files for ftp", "patient files\\unknown files")
+#unknown_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\unknown files"
+"""os.chdir(unknown_file_folder)
 downloaded_files = os.listdir()
 for files in downloaded_files:
-    test_file_for_true_or_false(files)
+    test_file_for_true_or_false(files)"""
 
-def add(a, b):
-  a += b
-  return a
-
-print(add(5,5))
