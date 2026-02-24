@@ -68,7 +68,7 @@ def invalid_filename_generator():
 
 
 def invalid_batchid_generator():
-    numb_of_rows = random.randint(0, 20)
+    numb_of_rows = random.randint(1, 20)
     random_id = []
     for x in range(numb_of_rows):
         random_id.append(random.randint(1, 999))
@@ -77,60 +77,6 @@ def invalid_batchid_generator():
     index = random.randrange(len(random_id))
     random_id.insert(index,dup_id)
     return random_id
-
-def invalid_file_generator():
-    invalid_filename = invalid_filename_generator()
-    invalid_batchid = invalid_batchid_generator()
-    invalid_headers = random_invalid_headers()
-    invalid_file_data = []
-    invalid_file_data.append(invalid_headers)
-    def invalid_row_data():
-        row_data = []  
-        for date in range(1):
-            start_date = "010101"
-            end_date = "235959"
-            start_date = datetime.strptime(start_date, "%H%M%S")
-            end_date = datetime.strptime(end_date, "%H%M%S")
-            random_date = start_date + (end_date - start_date) * random.random()
-            random_date = random_date.strftime("%H:%M:%S")
-            random_timestamp = str(random_date)
-            row_data.append(random_timestamp)
-    
-
-        reading_numb = random.randint(1,3)
-        for x in range(reading_numb):
-            readings_amount = random.randint(1,20)
-            for x in range(readings_amount):
-                id = random.uniform(1, 20)
-                row_data.append(id)
-
-        return row_data
-    
-
-    
-    
-    while invalid_batchid:
-        row_info = invalid_row_data()
-        row_info.insert(0, invalid_batchid.pop(0))
-        invalid_file_data.append(row_info)
-        
-    
-
-    
-
-    file_path_for_ftp_invalid_files = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp\invalid files"
-
-    file_path = os.path.join(file_path_for_ftp_invalid_files, invalid_filename)
-    with open(file_path, mode="w", newline="") as folder:
-        file_created = csv.writer(folder)
-        file_created.writerows(list(invalid_file_data))
-    
-    
-
-print(invalid_file_generator())
-
-
-
 
 def correct_filename_generator():
     patient_data_name = ""
@@ -143,8 +89,29 @@ def correct_filename_generator():
     patient_data_name = "MED_DATA_" + str(random_date) + ".csv"
     return patient_data_name
 
-# random.randint(1, 10) will produce dups
-
+def correct_row_data():
+    random_timestamp = ""
+    random_readings = []
+    data_for_row = []    
+    for date in range(1):
+        start_date = "010101"
+        end_date = "235959"
+        start_date = datetime.strptime(start_date, "%H%M%S")
+        end_date = datetime.strptime(end_date, "%H%M%S")
+        random_date = start_date + (end_date - start_date) * random.random()
+        random_date = random_date.strftime("%H:%M:%S")
+        random_timestamp = str(random_date)
+    
+    
+         
+    while len(random_readings) != 10:
+        id = round(random.uniform(1, 9.9), 3)
+        if id not in random_readings:
+            random_readings.append(id)
+        
+    data_for_row.append(random_timestamp)
+    data_for_row.extend(random_readings)
+    return data_for_row
 
 def correct_file_generator():
     file_data = [["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]]
@@ -158,33 +125,12 @@ def correct_file_generator():
                 random_batchid.append(id)
     
     
-    random_timestamp = ""
-    random_readings = []
+    
 
-    def row_data():
-        data_for_row = []    
-        for date in range(1):
-            start_date = "010101"
-            end_date = "235959"
-            start_date = datetime.strptime(start_date, "%H%M%S")
-            end_date = datetime.strptime(end_date, "%H%M%S")
-            random_date = start_date + (end_date - start_date) * random.random()
-            random_date = random_date.strftime("%H:%M:%S")
-            random_timestamp = str(random_date)
     
-    
-         
-        while len(random_readings) != 10:
-            id = round(random.uniform(1, 9.9), 3)
-            if id not in random_readings:
-                random_readings.append(id)
-        
-        data_for_row.append(random_timestamp)
-        data_for_row.extend(random_readings)
-        return data_for_row
     
     while random_batchid:
-        data = row_data()
+        data = correct_row_data()
         data.insert(0, random_batchid.pop(0))
         file_data.append(list(data))
 
@@ -197,4 +143,109 @@ def correct_file_generator():
         file_created.writerows(list(file_data))
     
     return file_data
+
+
+
+def invalid_file_generator():
+
+    filename = []
+    invalid_filename = invalid_filename_generator()
+    correct_filename = correct_filename_generator()
+    filename.append(invalid_filename)
+    filename.append(correct_filename)
+    indx = random.randrange(2)
+    file_name = filename[indx]
+    
+
+    def correct_batchid():
+        random_batchid = []
+        while len(random_batchid) != 10:
+            for numb in range(10):
+                id = random.randint(1, 999)
+                if id not in random_batchid:
+                    random_batchid.append(id)
+            return random_batchid
+
+
+    
+    batch_ids = []
+    correct_batch_id = correct_batchid()
+    invalid_batchid = invalid_batchid_generator()
+    batch_ids.append(correct_batch_id)
+    batch_ids.append(invalid_batchid)
+    indx = random.randrange(2)
+    batchid = batch_ids[indx]
+
+   
+   
+    headers = []
+    invalid_headers = random_invalid_headers()
+    correct_headers = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
+    headers.append(invalid_headers)
+    headers.append(correct_headers)
+    indx = random.randrange(2)
+    header = headers[indx]
+
+    file_data = []
+    file_data.append(header)
+
+    def invalid_row_data():
+        row_data = []  
+        for date in range(1):
+            start_date = "010101"
+            end_date = "235959"
+            start_date = datetime.strptime(start_date, "%H%M%S")
+            end_date = datetime.strptime(end_date, "%H%M%S")
+            random_date = start_date + (end_date - start_date) * random.random()
+            random_date = random_date.strftime("%H:%M:%S")
+            random_timestamp = str(random_date)
+            row_data.append(random_timestamp)
+        
+
+
+        reading_numb = random.randint(1,3)
+        for x in range(reading_numb):
+            readings_amount = random.randint(1,20)
+            for x in range(readings_amount):
+                id = random.uniform(1, 20)
+                row_data.append(id)
+
+        return row_data
+    
+
+    data_for_rows = [invalid_row_data, correct_row_data]
+    indx = random.randrange(2)
+    data = data_for_rows[indx]
+    print(data())
+    
+    for x in range(len(batchid)):
+        row_info = data()
+        row_info.insert(0, batchid.pop(0))
+        file_data.append(row_info)
+
+
+        
+
+    
+
+    
+
+    file_path_for_ftp_invalid_files = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp\invalid files"
+
+    file_path = os.path.join(file_path_for_ftp_invalid_files, invalid_filename)
+    with open(file_path, mode="w", newline="") as folder:
+        file_created = csv.writer(folder)
+        file_created.writerows(list(file_data))
+    
+    
+
+auto_log(invalid_file_generator())
+
+
+
+
+
+# random.randint(1, 10) will produce dups
+
+
 
