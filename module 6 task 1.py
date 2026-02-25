@@ -34,42 +34,6 @@ def open_remote_FTP_server_and_download_files(host, port, username, passwd, dire
 # validation check for correct date format
 #---------------------------------------------
 def check_for_valid_format(patient):
-    numb = ""
-    for ch in patient:
-        if ch.isdigit():          
-            numb += ch
-    century = numb[0:2]
-    numbcentury = int(century)
-    year = numb[2:4]
-    numbyear = int(year)
-    month = numb[4:6]
-    numbmonth = int(month)
-    day = numb[6:8]
-    numbday = int(day)
-    hour = numb[8:10]
-    numbhour = int(hour)
-    minute = numb[10:12]
-    numbmin = int(minute)
-    second = numb[12:14]
-    numbsec = int(second)
-    if numbcentury != 20:
-     return False
-    elif numbyear >= 27:
-      return False
-    elif numbmonth >= 13:
-      return False
-    elif numbday >= 32:
-      return False
-    elif numbhour >= 25:
-      return False
-    elif numbmin > 61:
-      return False
-    elif numbsec > 61:
-      return False
-    else:
-      return True 
-
-def check_valid_format(patient):
     try:
         numb = ""
         for ch in patient:
@@ -80,6 +44,8 @@ def check_valid_format(patient):
         return False
 
     return True
+
+
    
 
 
@@ -137,19 +103,27 @@ def check_for_invalid_field_name(patient):
 def check_missing_column_row_and_invalid_entries(patient):
    row_of_patient_data = []
    is_row_12 = []
-   patient_data = open(patient, newline="") 
-   for row in patient_data:
-       row_of_patient_data.append(row.split(","))
+   is_true_or_false = []
+   with open(patient, mode="r", newline="") as files:
+       data = csv.reader(files)
+       for row in data:
+           row_of_patient_data.append(row)
+
+   
+   
    for batches in row_of_patient_data:
-       is_row_12.append(len(batches))
-   for numb in row_of_patient_data:
-       if len(numb) != 12:
-          return False
-       else:
-          return True
-                                  
+        is_row_12.append(len(batches))
 
-
+   for numb in is_row_12:
+        if numb != 12:
+            is_true_or_false.append(False)
+        else:
+            is_true_or_false.append(True)
+    
+   if False in is_true_or_false:
+       return False
+   else:
+       return True
 
 def check_for_valid_reading_values(patient):
     extracted_patient_readings = []
@@ -169,7 +143,8 @@ def check_for_valid_reading_values(patient):
         return False
     else:
         return True
- 
+
+
 
 
 def check_for_0_byte(file_import):
@@ -229,8 +204,6 @@ def test_for_valid_file(patient_file):
     if patient_file_unknow == True:
         patient_file_unknow = check_missing_column_row_and_invalid_entries(patient_file)
     if patient_file_unknow == True:
-        patient_file_unknow = check_missing_column_row_and_invalid_entries(patient_file)
-    if patient_file_unknow == True:
         patient_file_unknow = check_for_valid_reading_values(patient_file)
     if patient_file_unknow == True:
         patient_file_unknow = check_for_0_byte(patient_file)
@@ -268,4 +241,8 @@ from pathlib import Path
 downloaded_files = os.listdir()
 for files in downloaded_files:
     test_file_for_true_or_false(files)"""
+
+def open_file(file):
+    with open(file, mode="r") as file_lines:
+        print(file_lines.readlines())
 
