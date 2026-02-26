@@ -297,16 +297,16 @@ def empty_file_generator():
 
 
 
-def random_invalid_file_gen():
-    random_numb = random.randint(range)
+def random_file_gen():
+    random_numb = random.randint(1, 10)
     print(random_numb)
-    if random_numb == (number to trigger generation empty file):
+    if random_numb == (3 or 6):
         empty_file_generator()
-    elif random_numb == (number to trigger generation of correct file):
+    elif random_numb == (2 or 5 or 8):
         correct_file_generator()
     else:
         invalid_file_generator()
 
-
+random_file_gen()
 
 # random.randint(1, 10) will produce dups
