@@ -88,6 +88,7 @@ def correct_filename_generator():
     random_date = random_date.strftime("%Y%m%d%H%M%S")
     patient_data_name = "MED_DATA_" + str(random_date) + ".csv"
     return patient_data_name
+    
 
 def correct_row_data():
     random_timestamp = ""
@@ -114,6 +115,7 @@ def correct_row_data():
     return data_for_row
 
 def correct_file_generator():
+    print("correct file generated")
     file_data = [["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]]
     
 
@@ -141,8 +143,45 @@ def correct_file_generator():
     with open(file_path, mode="w", newline="") as folder:
         file_created = csv.writer(folder)
         file_created.writerows(list(file_data))
-    
     return file_data
+
+def malformed_row_data():
+    random_timestamp = ""
+    random_readings = []
+    data_for_row = []    
+    for date in range(1):
+        start_date = "010101"
+        end_date = "235959"
+        start_date = datetime.strptime(start_date, "%H%M%S")
+        end_date = datetime.strptime(end_date, "%H%M%S")
+        random_date = start_date + (end_date - start_date) * random.random()
+        random_date = random_date.strftime("%H:%M:%S")
+        random_timestamp = str(random_date)
+    
+    
+         
+    while len(random_readings) != 10:
+        id = round(random.uniform(1, 9.9), 3)
+        random_readings.append(id)
+    
+
+    for items in random_readings:
+        readings = random_readings.pop(0)
+        random_readings.append(str(readings))
+    
+    def random_commas():
+        indx = random.randrange(len(random_readings))
+        element = random_readings.pop(indx)
+        element += "'"
+        random_readings.insert(indx, element)
+    
+    indx = random.randint(1, 5)
+    for x in range(indx):
+        random_commas()
+    
+    data_for_row.append(random_timestamp)
+    data_for_row.extend(random_readings)
+    return data_for_row
 
 
 
@@ -213,8 +252,8 @@ def invalid_file_generator():
         return row_data
     
 
-    data_for_rows = [invalid_row_data, correct_row_data]
-    indx = random.randrange(2)
+    data_for_rows = [invalid_row_data, correct_row_data,malformed_row_data]
+    indx = random.randrange(3)
     data = data_for_rows[indx]
     print(data())
     
@@ -236,8 +275,9 @@ def invalid_file_generator():
     with open(file_path, mode="w", newline="") as folder:
         file_created = csv.writer(folder)
         file_created.writerows(list(file_data))
+    print("potentially invalid file generated")
     
-invalid_file_generator()
+
 
 def empty_file_generator():
     filename = []
@@ -252,10 +292,20 @@ def empty_file_generator():
     file_path = os.path.join(file_path_for_ftp_invalid_files, file_name)
     with open(file_path, mode="w", newline="") as folder:
         pass
+    print("empty file generated")
 
 
 
 
+def random_invalid_file_gen():
+    random_numb = random.randint(range)
+    print(random_numb)
+    if random_numb == (number to trigger generation empty file):
+        empty_file_generator()
+    elif random_numb == (number to trigger generation of correct file):
+        correct_file_generator()
+    else:
+        invalid_file_generator()
 
 
 

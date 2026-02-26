@@ -1,5 +1,6 @@
 
 
+
 from ftplib import FTP
 import ftplib
 import ssl
@@ -7,15 +8,22 @@ import csv
 import os
 from datetime import datetime
 
+
 def open_remote_FTP_server_and_download_files(host, port, username, passwd, directory, local):
     ftp = FTP()
-    ftp.connect(host, port, None)
-    ftp.login( username, passwd)
+    try:
+        ftp.connect(host, port, None)
+    except AttributeError:
+        print("host number or port number is incorrect")
+    try:
+        ftp.login( username, passwd)
+    except AttributeError:
+        print("username or password is incorrect")
     ftp.cwd(directory)
     patient_files = ftp.nlst()
-    downloaded_good_folder = "patient files/good files"
+    downloaded_good_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\good files"
     downloaded_good_files = set(os.listdir(downloaded_good_folder))
-    downloaded_bad_folder = "patient files/bad files"
+    downloaded_bad_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\bad files"
     downloaded_bad_files = set(os.listdir(downloaded_bad_folder))
     filtered_patient_files = [file for file in patient_files if file not in (downloaded_good_files or downloaded_bad_files)]
     for files in filtered_patient_files:
@@ -23,10 +31,9 @@ def open_remote_FTP_server_and_download_files(host, port, username, passwd, dire
         with open(local_path, "wb") as newfile:
             ftp.retrbinary(f"RETR {files}", newfile.write)
     ftp.quit()
-    
+    print("finished downloading files from FTP server")
 
     
-
 
 
 
@@ -34,19 +41,20 @@ def open_remote_FTP_server_and_download_files(host, port, username, passwd, dire
 # validation check for correct date format
 #---------------------------------------------
 def check_for_valid_format(patient):
+    date_numb = patient.split("_")
+    date_numb = date_numb.pop(2)
     try:
         numb = ""
-        for ch in patient:
+        for ch in date_numb:
             if ch.isdigit():          
                 numb += ch
         date = datetime.strptime(numb, "%Y%m%d%H%M%S")
     except ValueError:
         return False
+    else:
+        return True
 
-    return True
 
-
-   
 
 
 
@@ -64,7 +72,7 @@ from collections import Counter
 
 def check_for_dup_batch_ID(patient):
     extracted_batch_ID = []
-    patient_data =  open(patient, newline="")
+    patient_data = open(patient, newline="")
     extracted_batch_ID.append([row.split(",")[0] for row in patient_data])
     batch_id = tuple(extracted_batch_ID[0])
     batch_ID = Counter(batch_id)
@@ -73,6 +81,7 @@ def check_for_dup_batch_ID(patient):
         return False
     else:
         return True   
+
 
 
 def check_for_invalid_field_name(patient):
@@ -138,11 +147,12 @@ def check_for_valid_reading_values(patient):
        patient_readings_float = [[float(readings) for readings in sublist] for sublist in patient_readings]
     except ValueError:
        return False
-    patient_readings_valid_or_not_valid = [[float > 9.9 for float in subset ] for subset in patient_readings_float]
-    if True in patient_readings_valid_or_not_valid: 
-        return False
     else:
-        return True
+        patient_readings_valid_or_not_valid = [[float > 9.9 for float in subset ] for subset in patient_readings_float]
+        if True in patient_readings_valid_or_not_valid: 
+            return False
+        else:
+            return True
 
 
 
@@ -157,46 +167,19 @@ def check_for_0_byte(file_import):
    
 
 
-#-------------------------------------
-# moving on because i need assistence
-#-------------------------------------
-def test_check_for_malformed_file(file):
-    patient_data = []
-    length_of_patient_row = []
-    file_opened = open(file, mode="r")
-    patient_data.append(file_opened.readlines())
-    return print(patient_data[0][3])
-    """for sublist in patient_data:
-        if , at sublist[0]
-           return False
-    for sublist in patient_data:
-       if "" and '' in sublist:
-          return False
-    count_of_quotes = []
-    for sub_element in patient_data:
-        count_of_quotes.append(sub_element.count(" or '))
-    if count_of_quotes / 2:
-       return False
-    elif count_of_quotes / 2 != 11:
-        return False
-    elif count_of_quotes == 0:
-        return True 
-        if "" in patient_data[0][1]: """
-
-#test_check_for_malformed_file("patient files/not valid/4/MED_DATA_20230303140104.csv")
 
 import shutil
-def move_bad_files_unit(file):
+def move_bad_files_unit(file, bad_folder_path):
     bad_file = file
-    destination = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\bad files"
+    destination = bad_folder_path
     shutil.move(bad_file, destination)
 
-def move_good_file_unit(file):
+def move_good_file_unit(file, good_folder_path):
     good_file = file
-    destination = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\good files"
+    destination = good_folder_path
     shutil.move(good_file, destination)
 
-#move_files_unit("patient files/valid/MED_DATA_20230603140104.csv", good_file)
+
 def test_for_valid_file(patient_file):
     patient_file_unknow = check_for_dup_batch_ID(patient_file)
     if patient_file_unknow == True:
@@ -216,18 +199,20 @@ def test_for_valid_file(patient_file):
 
 
 
-def test_file_for_true_or_false(file):
+def test_file_for_true_or_false(file, good_folder, bad_folder):
     patient_data = file
     patient_file_unknown = check_for_valid_format(patient_data)
     if patient_file_unknown == True:
         patient_known_data = test_for_valid_file (patient_data)
         if patient_known_data == True:
-            move_good_file_unit(patient_data)
+            move_good_file_unit(patient_data, good_folder)
+            print("file is valid")
         else:
-            move_bad_files_unit(patient_data)
+            move_bad_files_unit(patient_data, bad_folder)
+            print("file is not valid")
     else:
-        move_bad_files_unit(patient_data)
-        
+        move_bad_files_unit(patient_data, bad_folder)
+        print("file is not valid")
    
 
 #
@@ -235,14 +220,41 @@ def test_file_for_true_or_false(file):
 #
 
 from pathlib import Path
-#open_remote_FTP_server_and_download_files("127.0.0.1", 21, "FTP for school", "FTPforschool246","/FTPschool/files for ftp", "patient files\\unknown files")
-#unknown_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\unknown files"
-"""os.chdir(unknown_file_folder)
-downloaded_files = os.listdir()
-for files in downloaded_files:
-    test_file_for_true_or_false(files)"""
+def access_ftp_and_dowload_files():
+    user_inputs = []
+    print("please input host number, port number in this order")
+    inputs = input().split(",")
+    print("please enter FTP username and password")
+    inputs.extend(input().split(","))
+    print("please enter directory name and placeholder folder to download files")
+    inputs.extend(input().split(","))
+    for items in inputs:
+            user_inputs.append(items.strip())
+    port = user_inputs.pop(1)
+    user_inputs.insert(1,int(port))
+    open_remote_FTP_server_and_download_files(user_inputs[0], user_inputs[1], user_inputs[2], user_inputs[3], user_inputs[4], user_inputs[5])
+    unknown_file_folder = user_inputs[5]
+    os.chdir(unknown_file_folder)
+    downloaded_files = os.listdir()
+    file_number = 1
+    print("please enter file path for good files")
+    goodfolder = input()
+    print("please enter file path for bad files")
+    badfolder = input()
+    for files in downloaded_files:
+        test_file_for_true_or_false(files, goodfolder, badfolder)
+        print(f"preformed validation check on file {file_number} and moved file to good file folder or bad file folder")
+        file_number += 1
+
+    print("finished validation checks and downloading files")
+
+
+access_ftp_and_dowload_files()
+
 
 def open_file(file):
     with open(file, mode="r") as file_lines:
         print(file_lines.readlines())
+
+
 
