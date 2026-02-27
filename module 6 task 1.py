@@ -7,38 +7,114 @@ import ssl
 import csv 
 import os
 from datetime import datetime
+import socket
 
 
-def open_remote_FTP_server_and_download_files(host, port, username, passwd, directory, local):
+
+def open_remote_FTP_server_and_download_files():
     ftp = FTP()
-    try:
-        ftp.connect(host, port, None)
-    except AttributeError:
-        print("host number or port number is incorrect")
-    try:
-        ftp.login( username, passwd)
-    except AttributeError:
-        print("username or password is incorrect")
-    ftp.cwd(directory)
-    patient_files = ftp.nlst()
-    downloaded_good_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\good files"
-    downloaded_good_files = set(os.listdir(downloaded_good_folder))
-    downloaded_bad_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\bad files"
-    downloaded_bad_files = set(os.listdir(downloaded_bad_folder))
-    filtered_patient_files = [file for file in patient_files if file not in (downloaded_good_files or downloaded_bad_files)]
-    for files in filtered_patient_files:
-        local_path = os.path.join(local, files)
-        with open(local_path, "wb") as newfile:
-            ftp.retrbinary(f"RETR {files}", newfile.write)
-    ftp.quit()
-    print("finished downloading files from FTP server")
+    user_data = []
+    inputs = []
+    print("please input host number, port number in this order")
+    inputs.extend(input().split(","))
+    for items in inputs:
+        user_data.append(items.strip())
+        
+    port = user_data.pop(1)
+    user_data.insert(1,int(port))
+    while True:
+        try:
+            ftp.connect(user_data[0], user_data[1], None)
+            print("connected to server")
+            break
+        except socket.gaierror:
+            print("host number or port number incorrect please reenter host number and port number")
+            user_data = []
+            inputs = input().split(",")
+            for items in inputs:
+                user_data.append(items.strip())
+            port = user_data.pop(1)
+            user_data.insert(1,int(port))
 
     
 
+    
+    print("please enter FTP username and password")
+    inputs.extend(input().split(","))
+    for items in inputs[2:]:
+        user_data.append(items.strip())
+    while True:
+        try:
+            ftp.login(user_data[2], user_data[3])
+            print("login succssessful")
+            break
+        except ftplib.error_perm:
+            print(" username or password is incorrect please reenter username and password")
+            del inputs[2:4]
+            del user_data[2:4]
+            inputs.extend(input().split(","))
+            for items in inputs[2:]:
+                user_data.append(items.strip())
+        
+    
+
+    print("please enter directory name of folder in FTP that you would like to download files from")
+    inputs.append(input())
+    user_data.append(inputs[4].strip())
+    print(user_data)
+    while True:
+        try:
+            ftp.cwd(user_data[4])
+            print("succsessfully located folder in the FTP server")
+            break
+        except ftplib.error_perm:
+            print(" incorrect or invalid file path entered please reenter directory path")
+            inputs.pop(4)
+            user_data.pop(4)
+            inputs.extend(input().split(","))
+            print(inputs)
+            print(user_data)
+            user_data.append(inputs[4].strip())
+    
+    
+    
+    patient_files = ftp.nlst()
+    downloaded_good_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\good files"
+    downloaded_good_files = set(os.listdir(downloaded_good_folder))
+
+    downloaded_bad_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\patient files\bad files"
+    downloaded_bad_files = set(os.listdir(downloaded_bad_folder))
+
+    filtered_patient_files = [file for file in patient_files if file not in downloaded_bad_files]
+    filtered_patient_file = [file for file in filtered_patient_files if file not in downloaded_good_files]
+
+    print("please input local file path to download all unknown files")
+    inputs.extend(input().split(","))
+    user_data.append(inputs[5].strip())
+    while True:
+        try:
+            for files in filtered_patient_file:
+                local_path = os.path.join(user_data[5], files)
+                with open(local_path, "wb") as newfile:
+                    ftp.retrbinary(f"RETR {files}", newfile.write)
+            ftp.quit()
+            print("finished downloading files from FTP server")
+            break
+        except FileNotFoundError:
+            print("local file path incorrect or invalid please reenter file path")
+            inputs.pop(5)
+            user_data.pop(5)
+            inputs.extend(input().split(","))
+            user_data.append(inputs[5].strip())
 
 
-#---------------------------------------------
-# validation check for correct date format
+
+    
+    
+
+open_remote_FTP_server_and_download_files()
+
+
 #---------------------------------------------
 def check_for_valid_format(patient):
     date_numb = patient.split("_")
@@ -221,19 +297,10 @@ def test_file_for_true_or_false(file, good_folder, bad_folder):
 
 from pathlib import Path
 def access_ftp_and_dowload_files():
-    user_inputs = []
-    print("please input host number, port number in this order")
-    inputs = input().split(",")
-    print("please enter FTP username and password")
-    inputs.extend(input().split(","))
-    print("please enter directory name and placeholder folder to download files")
-    inputs.extend(input().split(","))
-    for items in inputs:
-            user_inputs.append(items.strip())
-    port = user_inputs.pop(1)
-    user_inputs.insert(1,int(port))
-    open_remote_FTP_server_and_download_files(user_inputs[0], user_inputs[1], user_inputs[2], user_inputs[3], user_inputs[4], user_inputs[5])
-    unknown_file_folder = user_inputs[5]
+    
+        
+    data = open_remote_FTP_server_and_download_files()
+    unknown_file_folder = data
     os.chdir(unknown_file_folder)
     downloaded_files = os.listdir()
     file_number = 1
@@ -249,7 +316,7 @@ def access_ftp_and_dowload_files():
     print("finished validation checks and downloading files")
 
 
-access_ftp_and_dowload_files()
+
 
 
 def open_file(file):
