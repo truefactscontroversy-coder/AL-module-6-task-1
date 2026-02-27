@@ -5,6 +5,7 @@ import random
 import os
 import csv
 from datetime import datetime
+import sys
 
 def auto_log(log_message):
     api_url = "https://www.uuidtools.com/api/generate/v1"
@@ -137,7 +138,7 @@ def correct_file_generator():
         file_data.append(list(data))
 
 
-    file_path_for_ftp_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp\correct files"
+    file_path_for_ftp_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp"
     mock_filename = correct_filename_generator()
     file_path = os.path.join(file_path_for_ftp_file_folder, mock_filename)
     with open(file_path, mode="w", newline="") as folder:
@@ -269,7 +270,7 @@ def invalid_file_generator():
 
     
 
-    file_path_for_ftp_invalid_files = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp\invalid files"
+    file_path_for_ftp_invalid_files = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp"
 
     file_path = os.path.join(file_path_for_ftp_invalid_files, file_name)
     with open(file_path, mode="w", newline="") as folder:
@@ -287,12 +288,14 @@ def empty_file_generator():
     filename.append(correct_filename)
     indx = random.randrange(2)
     file_name = filename[indx]
-    file_path_for_ftp_invalid_files = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp\invalid files"
+    file_path_for_ftp_invalid_files = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp"
 
     file_path = os.path.join(file_path_for_ftp_invalid_files, file_name)
     with open(file_path, mode="w", newline="") as folder:
         pass
     print("empty file generated")
+
+
 
 
 
