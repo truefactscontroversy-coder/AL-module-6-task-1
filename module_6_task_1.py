@@ -3,13 +3,13 @@
 
 from ftplib import FTP
 import ftplib
-import ssl
 import csv 
 import os
 from datetime import datetime
 import socket
-
-
+from collections import Counter
+import shutil
+from pathlib import Path
 
 def open_remote_FTP_server_and_download_files():
     ftp = FTP()
@@ -162,7 +162,6 @@ def check_for_valid_format(patient):
 #----------------------------------------
 
 
-from collections import Counter
 
 def check_for_dup_batch_ID(patient):
     extracted_batch_ID = []
@@ -262,7 +261,7 @@ def check_for_0_byte(file_import):
 
 
 
-import shutil
+
 def move_bad_files_unit(file, bad_folder_path):
     bad_file = file
     destination = bad_folder_path
@@ -313,7 +312,7 @@ def test_file_for_true_or_false(file, good_folder, bad_folder):
 # integration unit for all units
 #
 
-from pathlib import Path
+
 def access_ftp_and_dowload_files():
     
         
@@ -341,9 +340,7 @@ access_ftp_and_dowload_files()
 
 
 
-def open_file(file):
-    with open(file, mode="r") as file_lines:
-        print(file_lines.readlines())
+
 
 
 

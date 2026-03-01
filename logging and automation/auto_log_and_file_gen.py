@@ -5,8 +5,13 @@ import random
 import os
 import csv
 from datetime import datetime
-import sys
 
+#------------------------------------------------
+#auto log unit to log results of tests
+#------------------------------------------------
+
+print("please input file for logging test results")
+file_log_path = input()
 def auto_log(log_message):
     api_url = "https://www.uuidtools.com/api/generate/v1"
 
@@ -17,7 +22,7 @@ def auto_log(log_message):
     logger.setLevel(logging.INFO)
 
     formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(module)s:%(custom_attribute)s:%(message)s")
-    file_handler = logging.FileHandler(r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\file_logs.txt", mode='a')
+    file_handler = logging.FileHandler(file_log_path, mode='a')
     file_handler.setFormatter(formatter)
 
     old_factory = logging.getLogRecordFactory()
@@ -37,7 +42,9 @@ def auto_log(log_message):
     return logger.info(log_message)
 
 
-
+#--------------------------------------------------------
+# unit for creating random invalid headers to put in csv files
+#--------------------------------------------------------
 
 def random_invalid_headers():
     headers = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
@@ -55,6 +62,10 @@ def random_invalid_headers():
     
     return shuffled_headers 
 
+#------------------------------------------------
+# unit for generating random invalid empty files
+#------------------------------------------------
+
 def invalid_filename_generator():
     patient_data_name = ""
     start_date = "01202701010101"
@@ -66,7 +77,9 @@ def invalid_filename_generator():
     patient_data_name = "MED_DATA_" + str(random_date) + ".csv"
     return patient_data_name
 
-
+#------------------------------------------------
+# unit for generating random invalid batch ids
+#------------------------------------------------
 
 def invalid_batchid_generator():
     numb_of_rows = random.randint(1, 20)
@@ -79,6 +92,10 @@ def invalid_batchid_generator():
     random_id.insert(index,dup_id)
     return random_id
 
+#------------------------------------------------
+# unit for generating correct random empty files
+#------------------------------------------------
+
 def correct_filename_generator():
     patient_data_name = ""
     start_date = "20230603140104"
@@ -90,6 +107,11 @@ def correct_filename_generator():
     patient_data_name = "MED_DATA_" + str(random_date) + ".csv"
     return patient_data_name
     
+
+#----------------------------------------------------------------
+# unit for generating correct random data for rows in csv files
+#----------------------------------------------------------------
+
 
 def correct_row_data():
     random_timestamp = ""
@@ -115,8 +137,14 @@ def correct_row_data():
     data_for_row.extend(random_readings)
     return data_for_row
 
+
+#----------------------------------------------------------------------------------------
+# integration of all correct geneator units to generate correctly formatted csv files
+#----------------------------------------------------------------------------------------
+print("please input file path to store correct files")
+filepth_for_correctfiles = input()
 def correct_file_generator():
-    print("correct file generated")
+    print("correct file")
     file_data = [["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]]
     
 
@@ -138,13 +166,20 @@ def correct_file_generator():
         file_data.append(list(data))
 
 
-    file_path_for_ftp_file_folder = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp"
+    file_path_for_ftp_file_folder = filepth_for_correctfiles
     mock_filename = correct_filename_generator()
     file_path = os.path.join(file_path_for_ftp_file_folder, mock_filename)
     with open(file_path, mode="w", newline="") as folder:
         file_created = csv.writer(folder)
         file_created.writerows(list(file_data))
-    return file_data
+    return file_data, "correct file"
+    
+
+
+
+#---------------------------------------------------------------------
+# unit for generating invalid data for rows of in csv file
+#---------------------------------------------------------------------
 
 def malformed_row_data():
     random_timestamp = ""
@@ -186,15 +221,21 @@ def malformed_row_data():
 
 
 
+#--------------------------------------------------------------------------
+# integration of all invalid generator units to generate invalid files
+#--------------------------------------------------------------------------
+print("please input file path to store invalid files")
+filepath_for_invalid_files = input()
 def invalid_file_generator():
-
+    accidental_correct_file = []
     filename = []
     invalid_filename = invalid_filename_generator()
     correct_filename = correct_filename_generator()
-    filename.append(invalid_filename)
     filename.append(correct_filename)
+    filename.append(invalid_filename)
     indx = random.randrange(2)
     file_name = filename[indx]
+    accidental_correct_file.append(indx)
     
 
     def correct_batchid():
@@ -215,16 +256,17 @@ def invalid_file_generator():
     batch_ids.append(invalid_batchid)
     indx = random.randrange(2)
     batchid = batch_ids[indx]
-
+    batch_ids.append(indx)
    
    
     headers = []
     invalid_headers = random_invalid_headers()
     correct_headers = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
-    headers.append(invalid_headers)
     headers.append(correct_headers)
+    headers.append(invalid_headers)
     indx = random.randrange(2)
     header = headers[indx]
+    accidental_correct_file.append(indx)
 
     file_data = []
     file_data.append(header)
@@ -253,33 +295,39 @@ def invalid_file_generator():
         return row_data
     
 
-    data_for_rows = [invalid_row_data, correct_row_data,malformed_row_data]
+    data_for_rows = [correct_row_data, invalid_row_data, malformed_row_data]
     indx = random.randrange(3)
     data = data_for_rows[indx]
-    print(data())
+    accidental_correct_file.append(indx)
+    accidental_correct_file_total_numb = 0
+
+    for numb in accidental_correct_file:
+        accidental_correct_file_total_numb += numb
+
     
     for x in range(len(batchid)):
         row_info = data()
         row_info.insert(0, batchid.pop(0))
         file_data.append(row_info)
 
-
-        
-
-    
-
-    
-
-    file_path_for_ftp_invalid_files = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp"
+    file_path_for_ftp_invalid_files = filepath_for_invalid_files
 
     file_path = os.path.join(file_path_for_ftp_invalid_files, file_name)
     with open(file_path, mode="w", newline="") as folder:
         file_created = csv.writer(folder)
         file_created.writerows(list(file_data))
-    print("potentially invalid file generated")
-    
+
+    if accidental_correct_file_total_numb == 0:
+
+        return "correct file"
+    else:
+
+        return "invalid file"
 
 
+#---------------------------------------------------------------------
+# unit for generating empty files 
+#---------------------------------------------------------------------
 def empty_file_generator():
     filename = []
     invalid_filename = invalid_filename_generator()
@@ -288,28 +336,34 @@ def empty_file_generator():
     filename.append(correct_filename)
     indx = random.randrange(2)
     file_name = filename[indx]
-    file_path_for_ftp_invalid_files = r"C:\Users\ajlxs\OneDrive\Documents\coding project 2.0\AL-module-6-task-1\logging and automation\csv files for ftp"
+    file_path_for_ftp_invalid_file = filepath_for_invalid_files
 
-    file_path = os.path.join(file_path_for_ftp_invalid_files, file_name)
+    file_path = os.path.join(file_path_for_ftp_invalid_file, file_name)
     with open(file_path, mode="w", newline="") as folder:
         pass
-    print("empty file generated")
+
+    return "empty file"
 
 
 
-
-
-
+#---------------------------------------------------------------------------------------------
+# integration of all units to generate either a correct file, a empty file or a invalid file
+#---------------------------------------------------------------------------------------------
 def random_file_gen():
     random_numb = random.randint(1, 10)
-    print(random_numb)
-    if random_numb == (3 or 6):
-        empty_file_generator()
-    elif random_numb == (2 or 5 or 8):
-        correct_file_generator()
+    file = ""
+    if random_numb == (3):
+        file = empty_file_generator()
+        return (f"{file} successfully generated")
+    elif random_numb == (2 or 5 or 8 or 6):
+        file = correct_file_generator()
+        return (f"{file} successfully generated")
     else:
-        invalid_file_generator()
+        file = invalid_file_generator()
+        return (f"{file} successfully generated")
 
-random_file_gen()
-
-# random.randint(1, 10) will produce dups
+print("please input how many random files you would like generated")
+number_of_files = int(input())
+for numb in range(number_of_files):
+    auto_log(random_file_gen())
+print(f"{number_of_files} successfully generated")
