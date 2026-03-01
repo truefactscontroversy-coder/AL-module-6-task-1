@@ -1,0 +1,14 @@
+name: cicd pipeline
+
+on: [push, pull_requests]
+
+jobs:
+  build:
+  runs-on: ubuntu-latest
+steps:
+- name: Checkout code
+uses: actions/checkout@v3
+
+- name: Run a sample test
+run: pytest
+
