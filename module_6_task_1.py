@@ -18,7 +18,7 @@ def open_remote_FTP_server_and_download_files():
     print("please input host number, port number. In this order seperated by a , Example: 127.0.0.1, 26. ")
     inputs.extend(input().split(","))
     for items in inputs:
-        user_data.append(items.strip())
+        user_data.append(items.strip(' "'))
         
     port = user_data.pop(1)
     user_data.insert(1,int(port))
@@ -32,7 +32,7 @@ def open_remote_FTP_server_and_download_files():
             user_data = []
             inputs = input().split(",")
             for items in inputs:
-                user_data.append(items.strip())
+                user_data.append(items.strip(' "'))
             port = user_data.pop(1)
             user_data.insert(1,int(port))
 
@@ -54,7 +54,7 @@ def open_remote_FTP_server_and_download_files():
             del user_data[2:4]
             inputs.extend(input().split(","))
             for items in inputs[2:]:
-                user_data.append(items.strip())
+                user_data.append(items.strip(' "'))
         
     
 
@@ -71,7 +71,7 @@ def open_remote_FTP_server_and_download_files():
             inputs.pop(4)
             user_data.pop(4)
             inputs.extend(input().split(","))
-            user_data.append(inputs[4].strip())
+            user_data.append(inputs[4].strip(' "'))
     
     
     
@@ -80,7 +80,7 @@ def open_remote_FTP_server_and_download_files():
           "previously downloaded files or the empty folders were you would like the valid and invalid files to be stored")
     
     print("please enter file path for the valid files")
-    downloaded_good_folder = input()
+    downloaded_good_folder = input().strip(' "')
     while True:
         try:
             downloaded_good_files = set(os.listdir(downloaded_good_folder))
@@ -88,12 +88,15 @@ def open_remote_FTP_server_and_download_files():
             break
         except FileNotFoundError as e:
             print(f"Error {e} please reenter the filepath")
-            downloaded_good_folder = input()
+            downloaded_good_folder = input().strip(' "')
+        except OSError as e:
+            print(f"Error {e} please reenter the filepath")
+            downloaded_bad_folder = input().strip(' "')
     
 
 
     print("please enter file path for the invalid files")
-    downloaded_bad_folder = input()
+    downloaded_bad_folder = input().strip(' "')
     while True:
         try:
             downloaded_bad_files = set(os.listdir(downloaded_bad_folder))
@@ -101,7 +104,10 @@ def open_remote_FTP_server_and_download_files():
             break
         except FileNotFoundError as e:
             print(f"Error {e} please reenter the filepath")
-            downloaded_bad_folder = input()
+            downloaded_bad_folder = input().strip(' "')
+        except OSError as e:
+            print(f"Error {e} please reenter the filepath")
+            downloaded_bad_folder = input().strip(' "')
  
 
     filtered_patient_files = [file for file in patient_files if file not in downloaded_bad_files]
@@ -337,10 +343,6 @@ def access_ftp_and_dowload_files():
         print("finished validation checks and downloading files")
 
 access_ftp_and_dowload_files()
-
-
-
-
 
 
 

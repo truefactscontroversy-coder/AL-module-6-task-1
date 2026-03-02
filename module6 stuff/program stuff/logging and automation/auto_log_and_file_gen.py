@@ -10,8 +10,8 @@ from datetime import datetime
 #auto log unit to log results of tests
 #------------------------------------------------
 
-print("please input file for logging test results")
-file_log_path = input()
+#print("please input file for logging test results")
+#file_log_path = input()
 def auto_log(log_message):
     api_url = "https://www.uuidtools.com/api/generate/v1"
 
@@ -365,5 +365,5 @@ def random_file_gen():
 print("please input how many random files you would like generated")
 number_of_files = int(input())
 for numb in range(number_of_files):
-    auto_log(random_file_gen())
+    random_file_gen()
 print(f"{number_of_files} successfully generated")
