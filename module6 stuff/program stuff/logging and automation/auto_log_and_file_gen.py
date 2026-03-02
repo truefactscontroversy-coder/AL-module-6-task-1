@@ -5,7 +5,7 @@ import random
 import os
 import csv
 from datetime import datetime
-
+from pathlib import Path
 #------------------------------------------------
 #auto log unit to log results of tests
 #------------------------------------------------
@@ -142,7 +142,14 @@ def correct_row_data():
 # integration of all correct geneator units to generate correctly formatted csv files
 #----------------------------------------------------------------------------------------
 print("please input file path to store correct files")
-filepth_for_correctfiles = input()
+while True:
+    try:
+        filepth_for_correctfiles = input().strip(' "')
+        path = Path(filepth_for_correctfiles).resolve(strict=True)
+        break
+    except FileNotFoundError:
+        print("file path invalid please enter a valid file path")
+
 def correct_file_generator():
     print("correct file")
     file_data = [["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]]
@@ -225,7 +232,14 @@ def malformed_row_data():
 # integration of all invalid generator units to generate invalid files
 #--------------------------------------------------------------------------
 print("please input file path to store invalid files")
-filepath_for_invalid_files = input()
+filepath_for_invalid_files = input().strip(' "')
+while True:
+    try:
+        filepath_for_invalid_files = input().strip(' "')
+        path = Path(filepath_for_invalid_files).resolve(strict=True)
+        break
+    except FileNotFoundError:
+        print("file path invalid please enter a valid file path")
 def invalid_file_generator():
     accidental_correct_file = []
     filename = []
@@ -363,7 +377,14 @@ def random_file_gen():
         return (f"{file} successfully generated")
 
 print("please input how many random files you would like generated")
-number_of_files = int(input())
+while True:
+    try:
+        number_of_files = int(input())
+        break
+    except ValueError:
+        print("amount of files must be a number, example 1 or 2")
+
+
 for numb in range(number_of_files):
     random_file_gen()
 print(f"{number_of_files} successfully generated")
