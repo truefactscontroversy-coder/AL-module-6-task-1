@@ -382,16 +382,13 @@ def empty_file_generator():
 #---------------------------------------------------------------------------------------------
 def random_file_gen():
     random_numb = random.randint(1, 10)
-    file = ""
     if random_numb == (3):
-        file = empty_file_generator()
-        return print(f"{file} successfully generated")
-    elif random_numb == (2 or 5 or 8 or 6):
-        file = correct_file_generator()
-        return print(f"{file} successfully generated")
+        empty_file_generator()
+    elif random_numb == (2 or 5 or 8 or 6 or 9 or 1):
+        correct_file_generator()
     else:
-        file = invalid_file_generator()
-        return print(f"{file} successfully generated")
+        invalid_file_generator()
+
 
 print("please input how many random files you would like generated")
 while True:
