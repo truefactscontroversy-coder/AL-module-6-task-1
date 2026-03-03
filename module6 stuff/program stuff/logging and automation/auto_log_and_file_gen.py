@@ -6,12 +6,14 @@ import os
 import csv
 from datetime import datetime
 from pathlib import Path
-#------------------------------------------------
-#auto log unit to log results of tests
-#------------------------------------------------
+# ------------------------------------------------
+# auto log unit to log results of tests
+# ------------------------------------------------
 
-#print("please input file for logging test results")
-#file_log_path = input()
+# print("please input file for logging test results")
+# file_log_path = input()
+
+
 def auto_log(log_message):
     api_url = "https://www.uuidtools.com/api/generate/v1"
 
@@ -21,7 +23,9 @@ def auto_log(log_message):
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
 
-    formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(module)s:%(custom_attribute)s:%(message)s")
+    formatter = logging.Formatter(
+    "%(asctime)s:%(levelname)s:%(module)s:%(custom_attribute)s:%(message)s"
+    )
     file_handler = logging.FileHandler(file_log_path, mode='a')
     file_handler.setFormatter(formatter)
 
@@ -34,37 +38,38 @@ def auto_log(log_message):
 
     logging.setLogRecordFactory(record_factory)
 
-    
-
     logger.addHandler(file_handler)
-
 
     return logger.info(log_message)
 
 
-#--------------------------------------------------------
+# -------------------------------------------------------------
 # unit for creating random invalid headers to put in csv files
-#--------------------------------------------------------
+# -------------------------------------------------------------
 
 def random_invalid_headers():
-    headers = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
+    headers = ["batch_id", "timestamp", "reading1", "reading2", 
+               "reading3", "reading4",
+               "reading5", "reading6", "reading7", 
+               "reading8", "reading9", "reading10"]
     shuffled_headers = []
     new_headers = []
     for header in headers:
         new_headers.append(list(header))
-    
+
     for index in new_headers:
         current_header = index
         indx = random.randrange(len(index))
         current_header.pop(indx)
         current_header = "".join(current_header)
         shuffled_headers.append(current_header)
-    
-    return shuffled_headers 
 
-#------------------------------------------------
+    return shuffled_headers
+
+# ------------------------------------------------
 # unit for generating random invalid empty files
-#------------------------------------------------
+# ------------------------------------------------
+
 
 def invalid_filename_generator():
     patient_data_name = ""
@@ -77,9 +82,10 @@ def invalid_filename_generator():
     patient_data_name = "MED_DATA_" + str(random_date) + ".csv"
     return patient_data_name
 
-#------------------------------------------------
+# ------------------------------------------------
 # unit for generating random invalid batch ids
-#------------------------------------------------
+# ------------------------------------------------
+
 
 def invalid_batchid_generator():
     numb_of_rows = random.randint(1, 20)
@@ -89,12 +95,13 @@ def invalid_batchid_generator():
     index_for_dup = random.randrange(len(random_id))
     dup_id = random_id[index_for_dup]
     index = random.randrange(len(random_id))
-    random_id.insert(index,dup_id)
+    random_id.insert(index, dup_id)
     return random_id
 
-#------------------------------------------------
+# ------------------------------------------------
 # unit for generating correct random empty files
-#------------------------------------------------
+# ------------------------------------------------
+
 
 def correct_filename_generator():
     patient_data_name = ""
@@ -106,17 +113,17 @@ def correct_filename_generator():
     random_date = random_date.strftime("%Y%m%d%H%M%S")
     patient_data_name = "MED_DATA_" + str(random_date) + ".csv"
     return patient_data_name
-    
 
-#----------------------------------------------------------------
+
+# ----------------------------------------------------------------
 # unit for generating correct random data for rows in csv files
-#----------------------------------------------------------------
+# ----------------------------------------------------------------
 
 
 def correct_row_data():
     random_timestamp = ""
     random_readings = []
-    data_for_row = []    
+    data_for_row = []
     for date in range(1):
         start_date = "010101"
         end_date = "235959"
@@ -125,31 +132,30 @@ def correct_row_data():
         random_date = start_date + (end_date - start_date) * random.random()
         random_date = random_date.strftime("%H:%M:%S")
         random_timestamp = str(random_date)
-    
-    
-         
+
     while len(random_readings) != 10:
         id = round(random.uniform(1, 9.9), 3)
         if id not in random_readings:
             random_readings.append(id)
-        
+
     data_for_row.append(random_timestamp)
     data_for_row.extend(random_readings)
     return data_for_row
 
 
-#----------------------------------------------------------------------------------------
-# integration of all correct geneator units to generate correctly formatted csv files
-#----------------------------------------------------------------------------------------
+# ------------------------------------------------------------------
+# integration of all correct geneator units to generate correctly \
+# formatted csv files
+# ------------------------------------------------------------------
 print("please input file path to store correct files")
 while True:
     try:
         filepth_for_correctfiles = input().strip(' "')
-        if filepth_for_correctfiles == "" :
+        if filepth_for_correctfiles == "":
             while True:
                 print("input in empty please submit a file path")
                 filepth_for_correctfiles = input().strip(' "')
-                if filepth_for_correctfiles != "" :
+                if filepth_for_correctfiles != "":
                     break
         filepth_for_correctfiles.strip(' "')
         path = Path(filepth_for_correctfiles).resolve(strict=True)
@@ -160,9 +166,12 @@ while True:
     if filepth_for_correctfiles == None:
         print("input in empty please submit a file path")
 
+
 def correct_file_generator():
-    file_data = [["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]]
-    
+    file_data = [["batch_id", "timestamp", "reading1", "reading2", 
+                  "reading3", "reading4",
+                  "reading5", "reading6", "reading7", 
+                  "reading8", "reading9", "reading10"]]
 
     random_batchid = []
     while len(random_batchid) != 10:
@@ -170,17 +179,11 @@ def correct_file_generator():
             id = random.randint(1, 999)
             if id not in random_batchid:
                 random_batchid.append(id)
-    
-    
-    
 
-    
-    
     while random_batchid:
         data = correct_row_data()
         data.insert(0, random_batchid.pop(0))
         file_data.append(list(data))
-
 
     file_path_for_ftp_file_folder = filepth_for_correctfiles
     mock_filename = correct_filename_generator()
@@ -189,18 +192,16 @@ def correct_file_generator():
         file_created = csv.writer(folder)
         file_created.writerows(list(file_data))
     return "correct file"
-    
 
 
-
-#---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # unit for generating invalid data for rows of in csv file
-#---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 def malformed_row_data():
     random_timestamp = ""
     random_readings = []
-    data_for_row = []    
+    data_for_row = []
     for date in range(1):
         start_date = "010101"
         end_date = "235959"
@@ -209,37 +210,33 @@ def malformed_row_data():
         random_date = start_date + (end_date - start_date) * random.random()
         random_date = random_date.strftime("%H:%M:%S")
         random_timestamp = str(random_date)
-    
-    
-         
+
     while len(random_readings) != 10:
         id = round(random.uniform(1, 9.9), 3)
         random_readings.append(id)
-    
 
     for items in random_readings:
         readings = random_readings.pop(0)
         random_readings.append(str(readings))
-    
+
     def random_commas():
         indx = random.randrange(len(random_readings))
         element = random_readings.pop(indx)
         element += "'"
         random_readings.insert(indx, element)
-    
+
     indx = random.randint(1, 5)
     for x in range(indx):
         random_commas()
-    
+
     data_for_row.append(random_timestamp)
     data_for_row.extend(random_readings)
     return data_for_row
 
 
-
-#--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # integration of all invalid generator units to generate invalid files
-#--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 print("please input file path to store invalid files")
 
 while True:
@@ -267,7 +264,6 @@ def invalid_file_generator():
     indx = random.randrange(2)
     file_name = filename[indx]
     accidental_correct_file.append(indx)
-    
 
     def correct_batchid():
         random_batchid = []
@@ -278,8 +274,6 @@ def invalid_file_generator():
                     random_batchid.append(id)
             return random_batchid
 
-
-    
     batch_ids = []
     correct_batch_id = correct_batchid()
     invalid_batchid = invalid_batchid_generator()
@@ -288,11 +282,13 @@ def invalid_file_generator():
     indx = random.randrange(2)
     batchid = batch_ids[indx]
     batch_ids.append(indx)
-   
-   
+
     headers = []
     invalid_headers = random_invalid_headers()
-    correct_headers = ["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]
+    correct_headers = ["batch_id", "timestamp", "reading1", 
+                       "reading2", "reading3",
+                       "reading4", "reading5", "reading6", "reading7", 
+                       "reading8", "reading9", "reading10"]
     headers.append(correct_headers)
     headers.append(invalid_headers)
     indx = random.randrange(2)
@@ -303,28 +299,26 @@ def invalid_file_generator():
     file_data.append(header)
 
     def invalid_row_data():
-        row_data = []  
+        row_data = []
         for date in range(1):
             start_date = "010101"
             end_date = "235959"
             start_date = datetime.strptime(start_date, "%H%M%S")
             end_date = datetime.strptime(end_date, "%H%M%S")
-            random_date = start_date + (end_date - start_date) * random.random()
+            random_date = start_date + \
+                (end_date - start_date) * random.random()
             random_date = random_date.strftime("%H:%M:%S")
             random_timestamp = str(random_date)
             row_data.append(random_timestamp)
-        
 
-
-        reading_numb = random.randint(1,3)
+        reading_numb = random.randint(1, 3)
         for x in range(reading_numb):
-            readings_amount = random.randint(1,20)
+            readings_amount = random.randint(1, 20)
             for x in range(readings_amount):
                 id = random.uniform(1, 20)
                 row_data.append(id)
 
         return row_data
-    
 
     data_for_rows = [correct_row_data, invalid_row_data, malformed_row_data]
     indx = random.randrange(3)
@@ -335,7 +329,6 @@ def invalid_file_generator():
     for numb in accidental_correct_file:
         accidental_correct_file_total_numb += numb
 
-    
     for x in range(len(batchid)):
         row_info = data()
         row_info.insert(0, batchid.pop(0))
@@ -356,9 +349,9 @@ def invalid_file_generator():
         return "invalid file"
 
 
-#---------------------------------------------------------------------
-# unit for generating empty files 
-#---------------------------------------------------------------------
+# ----------------------------------------
+# unit for generating empty files
+# ----------------------------------------
 def empty_file_generator():
     filename = []
     invalid_filename = invalid_filename_generator()
@@ -376,10 +369,10 @@ def empty_file_generator():
     return "empty file"
 
 
-
-#---------------------------------------------------------------------------------------------
-# integration of all units to generate either a correct file, a empty file or a invalid file
-#---------------------------------------------------------------------------------------------
+# ----------------------------------------------------------
+# integration of all units to generate \
+# either a correct file, a empty file or a invalid file
+# ----------------------------------------------------------
 def random_file_gen():
     random_numb = random.randint(1, 10)
     if random_numb == (3):
@@ -401,5 +394,5 @@ while True:
 
 for numb in range(number_of_files):
     random_file_gen()
-   
+
 print(f"{number_of_files} successfully generated")
