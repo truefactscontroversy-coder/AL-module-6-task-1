@@ -11,6 +11,10 @@ from collections import Counter
 import shutil
 from pathlib import Path
 
+#---------------------------------------------
+#
+#---------------------------------------------
+
 def open_remote_FTP_server_and_download_files():
     ftp = FTP()
     user_data = []
@@ -18,7 +22,8 @@ def open_remote_FTP_server_and_download_files():
 
     while True:
         try:
-            print("please input host number, port number. In this order seperated by a , Example: 127.0.0.1, 26. ")
+            print("please input host number, port number. " \
+                  "In this order seperated by a , Example: 127.0.0.1, 26.")
             inputs.extend(input().split(","))
             for items in inputs:
                 user_data.append(items.strip(' "'))
@@ -28,7 +33,8 @@ def open_remote_FTP_server_and_download_files():
                     user_data.insert(1,int(port))
                     break
                 except ValueError:
-                    print("Error either you did not seperate the host number and the port number by a "," or you only input one number." \
+                    print("Error either you did not seperate the host number and the port number by a , "
+                          "or you only input one number." \
                           " please input two number serperated by a comma (,). Example: 127.0.0.1, 26.")
                     user_data = []
                     inputs = input().split(",")
@@ -36,8 +42,9 @@ def open_remote_FTP_server_and_download_files():
                     for items in inputs:
                         user_data.append(items.strip(' "'))
                 except IndexError:
-                    print("Error either you did not seperate the host number and the port number by a "," or you only input one number." \
-                          " please input two number serperated by a comma (,). Example: 127.0.0.1, 26.")
+                    print("Error either you did not seperate the host number and the port number by a , "
+                          "or you only input one number." \
+                          " please input two number serperated by a comma , . Example: 127.0.0.1, 26.")
                     user_data = []
                     inputs = input().split(",")
                     print(inputs)
@@ -61,9 +68,10 @@ def open_remote_FTP_server_and_download_files():
         
         
     
-
+    print("")
     
-    print("please enter FTP username and password. In this order seperated by a , Example: username234, password123 ")
+    print("please enter FTP username and password. " \
+          "In this order seperated by a , Example: username234, password123 ")
     inputs.extend(input().split(","))
     for items in inputs[2:]:
         user_data.append(items.strip())
@@ -80,17 +88,19 @@ def open_remote_FTP_server_and_download_files():
             for items in inputs[2:]:
                 user_data.append(items.strip())
         except IndexError:
-            print("Error either you did not seperate the username and the password by a , or you only input one ." \
-                  " please input two number serperated by a comma (,). Example: username234, password123 ")
+            print("Error either you did not seperate the username and the password by a , "
+                  "or you only input one. please input two number serperated by a comma (,). " \
+                  "Example: username234, password123 ")
             del inputs[2:]
             del user_data[2:]
             inputs.extend(input().split(","))
             for items in inputs[2:4]:
                 user_data.append(items.strip())
         
+    print("")
 
-
-    print("please enter directory name of folder in FTP that you would like to download files from")
+    print("please enter directory name of folder in FTP " \
+          "that you would like to download files from")
     inputs.append(input())
     user_data.append(inputs[4].strip())
     while True:
@@ -105,14 +115,14 @@ def open_remote_FTP_server_and_download_files():
             inputs.extend(input().split(","))
             user_data.append(inputs[4].strip())
     
-    
+    print("")
     
     patient_files = ftp.nlst()
-    print("To scan for unseen files, please enter the file paths to the folders containing the " \
-          "previously downloaded files or the empty folders were you would like the valid and invalid files to be stored" \
-          "")
+    print("To scan for unseen files, you will need enter the file paths to the folders containing " \
+          "the previously downloaded files or the empty folders " \
+          "were you would like the valid and invalid files to be stored")
     
-    
+    print("")
     print("please enter file path for the valid files")
     downloaded_good_folder = input().strip(' "')
     while True:
@@ -160,7 +170,6 @@ def open_remote_FTP_server_and_download_files():
     else:
         print("files scan successfully, unknown files identified")
 
-    print(filtered_patient_file)
 
     print("please input local file path to download all unknown files, for sorting")
     
@@ -171,7 +180,7 @@ def open_remote_FTP_server_and_download_files():
                 if user_data[5] == downloaded_good_folder:
                     while True:
                         print("same file path entered. if you do not enter a different path" \
-                              " validation checks will be perform but all files will be put in one folder" \
+                              " the sytem will not have a place to temperaraly store files" \
                               " please enter a new file path")
                         del inputs[5:]
                         del user_data[5:]
@@ -182,8 +191,17 @@ def open_remote_FTP_server_and_download_files():
                 elif user_data[5] == downloaded_bad_folder:
                     while True:
                         print("same file path entered. if you do not enter a different path" \
-                              " validation checks will be perform but all files will be put in one folder" \
+                              " the sytem will not have a place to temperaraly store files" \
                               " please enter a new file path")
+                        del inputs[5:]
+                        del user_data[5:]
+                        inputs.extend(input().split(","))
+                        user_data.append(inputs[5].strip(' "'))
+                        if user_data[5] != downloaded_bad_folder:
+                            break    
+                elif user_data[5] == "" :
+                    while True:
+                        print("no file path given. please enter a new file path")
                         del inputs[5:]
                         del user_data[5:]
                         inputs.extend(input().split(","))
@@ -216,31 +234,8 @@ def open_remote_FTP_server_and_download_files():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#---------------------------------------------
+# unit to check for valid date in csv filename
 #---------------------------------------------
 def check_for_valid_format(patient):
     date_numb = patient.split("_")
@@ -260,9 +255,8 @@ def check_for_valid_format(patient):
 
 
 #----------------------------------------
-# batch ID duplication check unit
+# unit to check for dup batch ID 
 #----------------------------------------
-
 
 
 def check_for_dup_batch_ID(patient):
@@ -277,7 +271,9 @@ def check_for_dup_batch_ID(patient):
     else:
         return True   
 
-
+#---------------------------------------------
+# unit to check for invalid header in csv file
+#---------------------------------------------
 
 def check_for_invalid_field_name(patient):
    column_names = open(patient)
@@ -302,7 +298,9 @@ def check_for_invalid_field_name(patient):
       return True
    
 
-
+#---------------------------------------------
+# unit to check for missing cells in csv file
+#---------------------------------------------
 
 def check_missing_column_row_and_invalid_entries(patient):
    row_of_patient_data = []
@@ -329,6 +327,11 @@ def check_missing_column_row_and_invalid_entries(patient):
    else:
        return True
 
+
+#-----------------------------------------------------------------------------------
+# unit to check for readings larger than 9.9 and amount of reading more than 10
+#-----------------------------------------------------------------------------------
+
 def check_for_valid_reading_values(patient):
     extracted_patient_readings = []
     patient_data = open(patient, newline="")
@@ -350,7 +353,9 @@ def check_for_valid_reading_values(patient):
             return True
 
 
-
+#---------------------------------------------
+# unit to check if the file is 0 bytes
+#---------------------------------------------
 
 def check_for_0_byte(file_import):
    file = file_import
@@ -362,7 +367,9 @@ def check_for_0_byte(file_import):
    
 
 
-
+#---------------------------------------------------------------------------------
+# units to move file from local file to valid file folder or invalid file folder
+#---------------------------------------------------------------------------------
 
 def move_bad_files_unit(file, bad_folder_path):
     bad_file = file
@@ -374,7 +381,9 @@ def move_good_file_unit(file, good_folder_path):
     destination = good_folder_path
     shutil.move(good_file, destination)
 
-
+#----------------------------------------------------------------------------------
+# integration of all internal validation check unit to ensure csv file is valid
+#----------------------------------------------------------------------------------
 def test_for_valid_file(patient_file):
     patient_file_unknow = check_for_dup_batch_ID(patient_file)
     if patient_file_unknow == True:
@@ -392,7 +401,9 @@ def test_for_valid_file(patient_file):
 
 
 
-
+#---------------------------------------------
+# integration of all validation checks 
+#---------------------------------------------
 
 def test_file_for_true_or_false(file, good_folder, bad_folder):
     patient_data = file
@@ -409,11 +420,9 @@ def test_file_for_true_or_false(file, good_folder, bad_folder):
         move_bad_files_unit(patient_data, bad_folder)
         print("file is not valid")
    
-
-#
-# integration unit for all units
-#
-
+#---------------------------------------------
+# integration of all units 
+#---------------------------------------------
 
 def access_ftp_and_dowload_files():
     
