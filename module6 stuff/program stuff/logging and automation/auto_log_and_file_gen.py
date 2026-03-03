@@ -145,13 +145,22 @@ print("please input file path to store correct files")
 while True:
     try:
         filepth_for_correctfiles = input().strip(' "')
+        if filepth_for_correctfiles == "" :
+            while True:
+                print("input in empty please submit a file path")
+                filepth_for_correctfiles = input().strip(' "')
+                if filepth_for_correctfiles != "" :
+                    break
+        filepth_for_correctfiles.strip(' "')
         path = Path(filepth_for_correctfiles).resolve(strict=True)
         break
     except FileNotFoundError:
         print("file path invalid please enter a valid file path")
 
+    if filepth_for_correctfiles == None:
+        print("input in empty please submit a file path")
+
 def correct_file_generator():
-    print("correct file")
     file_data = [["batch_id", "timestamp", "reading1", "reading2", "reading3", "reading4", "reading5", "reading6", "reading7", "reading8", "reading9", "reading10"]]
     
 
@@ -179,7 +188,7 @@ def correct_file_generator():
     with open(file_path, mode="w", newline="") as folder:
         file_created = csv.writer(folder)
         file_created.writerows(list(file_data))
-    return file_data, "correct file"
+    return "correct file"
     
 
 
@@ -232,14 +241,22 @@ def malformed_row_data():
 # integration of all invalid generator units to generate invalid files
 #--------------------------------------------------------------------------
 print("please input file path to store invalid files")
-filepath_for_invalid_files = input().strip(' "')
+
 while True:
     try:
         filepath_for_invalid_files = input().strip(' "')
+        if filepath_for_invalid_files == "":
+            while True:
+                print("input in empty please submit a file path")
+                filepath_for_invalid_files = input().strip(' "')
+                if filepath_for_invalid_files != "":
+                    break
         path = Path(filepath_for_invalid_files).resolve(strict=True)
         break
     except FileNotFoundError:
         print("file path invalid please enter a valid file path")
+
+
 def invalid_file_generator():
     accidental_correct_file = []
     filename = []
@@ -368,13 +385,13 @@ def random_file_gen():
     file = ""
     if random_numb == (3):
         file = empty_file_generator()
-        return (f"{file} successfully generated")
+        return print(f"{file} successfully generated")
     elif random_numb == (2 or 5 or 8 or 6):
         file = correct_file_generator()
-        return (f"{file} successfully generated")
+        return print(f"{file} successfully generated")
     else:
         file = invalid_file_generator()
-        return (f"{file} successfully generated")
+        return print(f"{file} successfully generated")
 
 print("please input how many random files you would like generated")
 while True:
@@ -387,4 +404,5 @@ while True:
 
 for numb in range(number_of_files):
     random_file_gen()
+   
 print(f"{number_of_files} successfully generated")
