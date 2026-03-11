@@ -24,40 +24,9 @@ def open_remote_FTP_server_and_download_files():
           )
     inputs.extend(input().split(","))
     for items in inputs:
-        user_data.append(items.strip(' "'))
+        user_data.append(items.strip())
     while True:
         try:
-            while True:
-                try:
-                    port = user_data.pop(1)
-                    user_data.insert(1, int(port))
-                    break
-                except ValueError:
-                    print("Error either you did not separate the host number "
-                          "and the port number by a (,) "
-                          "or you only input one"
-                          " number. please input two numbers serparated by a "
-                          "comma (,) . Example: 127.0.0.1, 26."
-                          )
-                    user_data = []
-                    inputs = input().split(",")
-                    print(inputs)
-                    for items in inputs:
-                        user_data.append(items.strip(' "'))
-                except IndexError:
-                    print("Error either you did not separate the host number "
-                          "and the port number by a (,) "
-                          "or you only input one "
-                          "number. please input two numbers serperated by a "
-                          "comma (,) . Example: 127.0.0.1, 26."
-                          )
-                    user_data = []
-                    inputs = input().split(",")
-                    print(inputs)
-                    for items in inputs:
-                        user_data.append(items.strip(' "'))
-            port = user_data.pop(1)
-            user_data.insert(1, int(port))
             port = user_data.pop(1)
             user_data.insert(1, int(port))
             ftp.connect(user_data[0], user_data[1], None)
@@ -69,9 +38,36 @@ def open_remote_FTP_server_and_download_files():
             user_data = []
             inputs = input().split(",")
             for items in inputs:
-                user_data.append(items.strip(' "'))
-            port = user_data.pop(1)
-            user_data.insert(1, int(port))
+                user_data.append(items.strip())
+        except ConnectionRefusedError:
+            print("host number or port number is incorrect please reenter "
+                  "host number and port number.")
+            user_data = []
+            inputs = input().split(",")
+            for items in inputs:
+                user_data.append(items.strip())
+        except ValueError:
+            print("Error either you did not separate the host number "
+                    "and the port number by a (,) "
+                    "or you only input one"
+                    " number. please input two numbers serparated by a "
+                    "comma (,) . Example: 127.0.0.1, 26."
+                    )
+            user_data = []
+            inputs = input().split(",")
+            for items in inputs:
+                user_data.append(items.strip())
+        except IndexError:
+            print("Error either you did not separate the host number "
+                    "and the port number by a (,) "
+                    "or you only input one "
+                    "number. please input two numbers serperated by a "
+                    "comma (,) . Example: 127.0.0.1, 26."
+                    )
+            user_data = []
+            inputs = input().split(",")
+            for items in inputs:
+                user_data.append(items.strip())
 
     print("")
 

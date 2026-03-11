@@ -375,9 +375,10 @@ def empty_file_generator():
 # ----------------------------------------------------------
 def random_file_gen():
     random_numb = random.randint(1, 10)
+    good_numbs = {1,2,5,6,8,9,10}
     if random_numb == (3):
         empty_file_generator()
-    elif random_numb == (2 or 5 or 8 or 6 or 9 or 1):
+    elif random_numb in good_numbs:
         correct_file_generator()
     else:
         invalid_file_generator()
@@ -396,3 +397,4 @@ for numb in range(number_of_files):
     random_file_gen()
 
 print(f"{number_of_files} successfully generated")
+print("please kill terminal and restart program")
