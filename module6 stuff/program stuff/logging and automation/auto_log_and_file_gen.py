@@ -13,6 +13,7 @@ from pathlib import Path
 # print("please input file for logging test results")
 # file_log_path = input()
 
+file_log_path = r"test_logs.txt"
 
 def auto_log(log_message):
     api_url = "https://www.uuidtools.com/api/generate/v1"
