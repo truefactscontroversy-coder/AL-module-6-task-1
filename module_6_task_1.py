@@ -16,7 +16,7 @@ from pathlib import Path
 
 
 def open_remote_FTP_server_and_download_files():
-    ftp = FTP()
+    ftp = FTP("host.docker.internal")
     user_data = []
     inputs = []
     print("please input host number and port number. "
@@ -70,6 +70,8 @@ def open_remote_FTP_server_and_download_files():
                 user_data.append(items.strip())
 
     print("")
+    ftp.set_pasv(True)
+    ftp.af = socket.AF_INET
 
     print("please enter FTP username and password. "
           "In this order seperated by a (,) Example: username234, password123 "
@@ -104,7 +106,8 @@ def open_remote_FTP_server_and_download_files():
             inputs.extend(input().split(","))
             for items in inputs[2:4]:
                 user_data.append(items.strip())
-
+    
+    
     print("")
 
     print("please enter directory name of folder in FTP "

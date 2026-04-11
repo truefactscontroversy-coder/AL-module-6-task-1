@@ -4,9 +4,6 @@ This programs is designed to
 1. download file from an FTP server
 2. sort downloaded files to ensure that data is valid 
 
-In order to run the container properly you need to build the contianer with this command
-placeholder
-this will download all dependencies and mount the folders you will need to store the file
 
 Once the docker contianer is built the program will prompt you to 
 input host number and port number (you will need to enter these two with a comma more instructions will appear on the screen)
@@ -18,15 +15,21 @@ then the program will ask for three folder paths in this order
 3. folder to store files downloaded form FTP 
 note: these folder need to be the same ones mounted in the beginning 
 
-please create a file labeled requirments.txt and then paste these requirements inside
+in order for the container to properly run you will need to uses the docker command provided below
 
-pytest
-flask
-requests
+docker run -it --rm -v "add your own file path:/placeholder foldername/foldername" -v "add your own file path:/placeholder foldername/foldername" -v "add your own file path:/placeholder foldername/foldername" python-module_6_task_1.py:v1
 
-the name of the file should be "requirments.txt"
+"docker run -it" this starts the container 
 
-the only thing in the file should be these lines each seperated by a line breake
-pytest
-flask
-requests
+"--rm" this remove the contianer after the program finishes running this ensures there is no error when the program ends
+
+"-v" this tell docker to mount the file 
+
+":" this is vital to tell docker to create a path within the container, without it the file paths will not have anywhere to go inside the docker
+
+"/placeholder foldername" this is the main folder inside the docker that will hold all the other folders (i.e. /foldername)
+
+"/foldername" this is the path for each specific folder, for example is the first mounted file path is for vaild data then i would name the folder "/vaild_data"
+
+
+

@@ -6,6 +6,5 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-EXPOSE 5000
 
 CMD ["python", "module_6_task_1.py"]
